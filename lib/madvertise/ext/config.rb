@@ -18,7 +18,8 @@ class Section < Hash
       self[name.to_s[0..-2].to_sym] = args.first
     else
       value = self[name]
-      value.is_a?(Proc) ? value.call : value
+      self[name] = value.call if value.is_a?(Proc)
+      self[name]
     end
   end
 end
@@ -46,12 +47,16 @@ class Configuration < Section
 
   def load_mixins
     mixin_files.each do |mixin_file|
-      mixin = build_config(YAML.load(File.read(mixin_file)))
-      if mixin.has_key?(@mode)
-        self.deep_merge!(mixin[@mode])
-      else
-        self.deep_merge!(mixin)
-      end
+      mixin(mixin_file)
+    end
+  end
+
+  def mixin(file)
+    mixin = build_config(YAML.load(File.read(file)))
+    if mixin.has_key?(@mode)
+      self.deep_merge!(mixin[@mode])
+    else
+      self.deep_merge!(mixin)
     end
   end
 
