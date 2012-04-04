@@ -1,0 +1,7 @@
+---
+NestedIterators:
+  exclude:
+    - Configuration#build_config
+FeatureEnvy:
+  exclude:
+    - Section#deep_merge
