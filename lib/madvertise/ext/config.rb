@@ -63,11 +63,17 @@ class Configuration < Section
   def build_config(hash)
     Section.new.tap do |result|
       hash.each do |key, value|
-        result[key.to_sym] = if value.is_a?(Hash)
-                               build_config(value)
-                             else
-                               value
-                             end
+        value = if value.is_a?(Hash)
+                  build_config(value)
+                elsif value.is_a?(Array)
+                  value.map do |item|
+                    build_config(item)
+                  end
+                else
+                  value
+                end
+
+        result[key.to_sym] = value
       end
     end
   end
