@@ -26,7 +26,7 @@ end
 
 class Configuration < Section
   def initialize(base_config_path, mode = :development, mixin_path = nil, mixins_to_use = [])
-    config = build_config(YAML.load(File.read(base_config_path)))
+    config = self.class.from_hash(YAML.load(File.read(base_config_path)))
 
     @mode = mode
 
@@ -35,9 +35,40 @@ class Configuration < Section
 
     @mixin_path = mixin_path
     @mixins_to_use = mixins_to_use
-
     load_mixins if @mixin_path and @mixins_to_use.any?
   end
+
+  def mixin(value)
+    unless value.is_a?(Hash)
+      value = self.class.from_hash(YAML.load(File.read(file)))
+    end
+
+    if value.has_key?(@mode)
+      self.deep_merge!(value[@mode])
+    else
+      self.deep_merge!(value)
+    end
+  end
+
+  def self.from_hash(hsh)
+    new.tap do |result|
+      hsh.each do |key, value|
+        value = if value.is_a?(Hash)
+                  from_hash(value)
+                elsif value.is_a?(Array)
+                  value.map do |item|
+                    from_hash(item)
+                  end
+                else
+                  value
+                end
+
+        result[key.to_sym] = value
+      end
+    end
+  end
+
+  private
 
   def mixin_files
     @mixins_to_use.map do |mixin_name|
@@ -48,33 +79,6 @@ class Configuration < Section
   def load_mixins
     mixin_files.each do |mixin_file|
       mixin(mixin_file)
-    end
-  end
-
-  def mixin(file)
-    mixin = build_config(YAML.load(File.read(file)))
-    if mixin.has_key?(@mode)
-      self.deep_merge!(mixin[@mode])
-    else
-      self.deep_merge!(mixin)
-    end
-  end
-
-  def build_config(hash)
-    Section.new.tap do |result|
-      hash.each do |key, value|
-        value = if value.is_a?(Hash)
-                  build_config(value)
-                elsif value.is_a?(Array)
-                  value.map do |item|
-                    build_config(item)
-                  end
-                else
-                  value
-                end
-
-        result[key.to_sym] = value
-      end
     end
   end
 end
