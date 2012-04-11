@@ -51,7 +51,7 @@ class Configuration < Section
   end
 
   def self.from_hash(hsh)
-    new.tap do |result|
+    Section.new.tap do |result|
       hsh.each do |key, value|
         value = if value.is_a?(Hash)
                   from_hash(value)
