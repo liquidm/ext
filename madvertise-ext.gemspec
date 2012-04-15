@@ -10,8 +10,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Ruby extensions}
   gem.homepage      = "https://github.com/madvertise/ext"
 
-  gem.add_development_dependency "rake"
-  gem.add_development_dependency "bundler"
+  gem.add_dependency "madvertise-logging"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")

@@ -3,7 +3,10 @@ source :rubygems
 gemspec
 
 group :development, :test do
+  gem 'bundler'
   gem 'pry'
+  gem 'pry-doc'
+  gem 'rake'
   gem 'redcarpet'
   gem 'reek'
   gem 'rspec'

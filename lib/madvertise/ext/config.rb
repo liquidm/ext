@@ -109,6 +109,26 @@ class Configuration < Section
       mixin(mixin_file)
     end
   end
+
+  ##
+  # The {Helpers} module can be included in all classes that wish to load
+  # configuration file(s). In order to load custom configuration files the
+  # including class needs to set the +@config_file+ instance variable.
+  #
+  module Helpers
+
+    # Load the configuration. The default configuration is located at
+    # +lib/ganymed/config.yml+ inside the Ganymed source tree.
+    #
+    # @return [Configuration]  The configuration object. See madvertise-ext gem
+    #                          for details.
+    def config
+      @config ||= Configuration.new(Env.mode) do |config|
+        config.mixin(@default_config_file) if @default_config_file
+        config.mixin(@config_file) if @config_file
+      end
+    end
+  end
 end
 
 ##
