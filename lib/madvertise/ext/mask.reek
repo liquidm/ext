@@ -1,7 +1,7 @@
 ---
 NestedIterators:
   exclude:
-    - Configuration#build_config
+    - Section#from_hash
 FeatureEnvy:
   exclude:
-    - Section#deep_merge
+    - Hash#deep_merge

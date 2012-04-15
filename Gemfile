@@ -2,10 +2,8 @@ source :rubygems
 
 gemspec
 
-gem 'rake'
-gem 'bundler'
-
-group :test do
+group :development, :test do
+  gem 'pry'
   gem 'redcarpet'
   gem 'reek'
   gem 'rspec'
