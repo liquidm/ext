@@ -53,7 +53,7 @@ class Section < Hash
   # @return [void]
   def mixin(value)
     unless value.is_a?(Hash)
-      value = Section.from_hash(YAML.load(File.read(file)))
+      value = Section.from_hash(YAML.load(File.read(value)))
     end
 
     self.deep_merge!(value[:default]) if value.has_key?(:default)
