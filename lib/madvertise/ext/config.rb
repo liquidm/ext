@@ -11,6 +11,7 @@ class Configuration < Section
   #
   # @param [Symbol] mode  The mode to load from the configurtion file
   #                       (production, development, etc)
+  # @yield [config]  The new configuration object.
   def initialize(mode = :development)
     @mode = mode
     yield self if block_given?
@@ -126,22 +127,27 @@ end
 # that does not call the block given to tap _at all_.
 #
 class NilSection
+  # @return true
   def nil?
     true
   end
 
+  # @return true
   def empty?
     true
   end
 
+  # @return false
   def present?
     false
   end
 
+  # @return self
   def tap
     self
   end
 
+  # @private
   def method_missing(*args, &block)
     self
   end
