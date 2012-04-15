@@ -2,36 +2,6 @@ require 'yaml'
 require 'madvertise/ext/hash'
 
 ##
-# The Configuration class provides a simple interface to configuration stored
-# inside of YAML files.
-#
-class Configuration < Section
-
-  # Create a new {Configuration} object.
-  #
-  # @param [Symbol] mode  The mode to load from the configurtion file
-  #                       (production, development, etc)
-  # @yield [config]  The new configuration object.
-  def initialize(mode = :development)
-    @mode = mode
-    yield self if block_given?
-  end
-
-  # Load given mixins from +path+.
-  #
-  # @param [String] path  The path to mixin files.
-  # @param [Array] mixins_to_use  A list of mixins to load from +path+.
-  # @return [void]
-  def load_mixins(path, mixins_to_use)
-    mixins_to_use.map do |mixin_name|
-      File.join(path, "#{mixin_name}.yml")
-    end.each do |mixin_file|
-      mixin(mixin_file)
-    end
-  end
-end
-
-##
 # A {Configuration} consists of one or more Sections. A section is a hash-like
 # object that responds to all keys in the hash as if they were methods:
 #
@@ -107,6 +77,36 @@ class Section < Hash
       value = value.call if value.is_a?(Proc)
       value = NilSection.new if value.nil?
       self[name] = value
+    end
+  end
+end
+
+##
+# The Configuration class provides a simple interface to configuration stored
+# inside of YAML files.
+#
+class Configuration < Section
+
+  # Create a new {Configuration} object.
+  #
+  # @param [Symbol] mode  The mode to load from the configurtion file
+  #                       (production, development, etc)
+  # @yield [config]  The new configuration object.
+  def initialize(mode = :development)
+    @mode = mode
+    yield self if block_given?
+  end
+
+  # Load given mixins from +path+.
+  #
+  # @param [String] path  The path to mixin files.
+  # @param [Array] mixins_to_use  A list of mixins to load from +path+.
+  # @return [void]
+  def load_mixins(path, mixins_to_use)
+    mixins_to_use.map do |mixin_name|
+      File.join(path, "#{mixin_name}.yml")
+    end.each do |mixin_file|
+      mixin(mixin_file)
     end
   end
 end
