@@ -162,9 +162,9 @@ class NilSection
     false
   end
 
-  # @return self
+  # @return nil
   def tap
-    self
+    nil
   end
 
   # @private
