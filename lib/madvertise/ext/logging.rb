@@ -2,8 +2,6 @@ require 'active_support/core_ext/module/attribute_accessors'
 require 'madvertise/ext/environment'
 require 'madvertise-logging'
 
-include Madvertise::Logging
-
 ##
 # The {Logging} module provides a global container for the logger object.
 #
@@ -14,17 +12,17 @@ module Logging
   # @private
   def self.create_logger
     if Env.prod?
-      ImprovedLogger.new(:syslog, $0)
+      Madvertise::Logging::ImprovedLogger.new(:syslog, $0)
     else
-      ImprovedLogger.new(STDERR, $0)
+      Madvertise::Logging::ImprovedLogger.new(STDERR, $0)
     end.tap do |logger|
       logger.level = :info
     end
   end
 
   ##
-  # The {Logging::Helpers} module can be included in classes that wish to use
-  # the global logger.
+  # The {Logging::Helpers} module is mixed into the Object class to make the
+  # logger available to every object in the system.
   #
   module Helpers
 
@@ -32,7 +30,11 @@ module Logging
     #
     # @return [Logger]  The logger object.
     def log
-      Logging.logger ||= Logging.create_logger
+      ::Logging.logger ||= ::Logging.create_logger
     end
   end
+end
+
+class ::Object
+  include ::Logging::Helpers
 end
