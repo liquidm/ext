@@ -36,7 +36,7 @@ class Section < Hash
         from_hash(value)
       when Array
         value.map do |item|
-          from_hash(item)
+          from_value(item)
         end
       else
         value
