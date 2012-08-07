@@ -20,6 +20,8 @@ class Environment
   # @return [String]  The current environment mode.
   def mode
     ENV[@key] || 'development'
+  rescue
+    'development'
   end
 
   # Retrieve the current environment mode and convert it to a symbol.
