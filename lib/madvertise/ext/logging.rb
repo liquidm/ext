@@ -37,4 +37,8 @@ end
 
 class ::Object
   include ::Logging::Helpers
+
+  def self.method_added(name)
+    raise "override of method #log is not allowed" unless name.to_sym == :log
+  end
 end
