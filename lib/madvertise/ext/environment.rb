@@ -11,7 +11,7 @@ class Environment
   # @param [String] key  The key in +ENV+ to contain the current program
   #                      environment.
   #
-  def initialize(key=nil)
+  def initialize(key = "RACK_ENV")
     @key = key
   end
 
