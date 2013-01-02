@@ -1,5 +1,8 @@
 require 'yaml'
+require 'set'
+
 require 'madvertise/ext/hash'
+require 'madvertise/ext/environment'
 
 ##
 # A {Configuration} consists of one or more Sections. A section is a hash-like
@@ -12,14 +15,24 @@ require 'madvertise/ext/hash'
 #   => 1
 #
 class Section < Hash
+
   class << self
+
+    # How to handle nil values in the configuration?
+    #
+    # Possible values are:
+    #  - :nil, nil  (return nil)
+    #  - :raise  (raise an exception)
+    #  - :section  (return a NilSection which can be chained)
+    #
+    attr_accessor :nil_action
 
     # Create a new section from the given hash-like object.
     #
     # @param [Hash] hsh  The hash to convert into a section.
     # @return [Section]  The new {Section} object.
     def from_hash(hsh)
-      result = new.tap do |result|
+      new.tap do |result|
         hsh.each do |key, value|
           result[key.to_sym] = from_value(value)
         end
@@ -42,28 +55,7 @@ class Section < Hash
         value
       end
     end
-  end
 
-  # Mixin a configuration snippet into the current section.
-  #
-  # @param [Hash, String] value  A hash to merge into the current
-  #                              configuration. If a string is given a filename
-  #                              is assumed and the given file is expected to
-  #                              contain a YAML hash.
-  # @return [void]
-  def mixin(value)
-    unless value.is_a?(Hash)
-      value = Section.from_hash(YAML.load(File.read(value)))
-    end
-
-    self.deep_merge!(value[:default]) if value.has_key?(:default)
-    self.deep_merge!(value[:generic]) if value.has_key?(:generic)
-
-    if value.has_key?(@mode)
-      self.deep_merge!(value[@mode])
-    else
-      self.deep_merge!(value)
-    end
   end
 
   # Build the call chain including NilSections.
@@ -75,7 +67,20 @@ class Section < Hash
     else
       value = self[name]
       value = value.call if value.is_a?(Proc)
-      value = NilSection.new if value.nil?
+
+      if value.nil?
+        case self.class.nil_action
+        when :nil, nil
+          # do nothing
+        when :raise
+          raise "value is nil for key #{name}"
+        when :section
+          value = NilSection.new if value.nil?
+        else
+          raise "unknown nil handling: #{self.class.nil_action}"
+        end
+      end
+
       self[name] = value
     end
   end
@@ -92,8 +97,9 @@ class Configuration < Section
   # @param [Symbol] mode  The mode to load from the configurtion file
   #                       (production, development, etc)
   # @yield [config]  The new configuration object.
-  def initialize(mode = :development)
-    @mode = mode
+  def initialize
+    @mixins = Set.new
+    @callbacks = []
     yield self if block_given?
   end
 
@@ -110,25 +116,52 @@ class Configuration < Section
     end
   end
 
-  ##
-  # The {Helpers} module can be included in all classes that wish to load
-  # configuration file(s). In order to load custom configuration files the
-  # including class needs to set the +@config_file+ instance variable.
+  # Mixin a configuration snippet into the current section.
   #
-  module Helpers
+  # @param [Hash, String] value  A hash to merge into the current
+  #                              configuration. If a string is given a filename
+  #                              is assumed and the given file is expected to
+  #                              contain a YAML hash.
+  # @return [void]
+  def mixin(value)
+    if value.is_a?(String)
+      @mixins << value
+      value = YAML.load(File.read(value))
+    end
 
-    # Load the configuration. The default configuration is located at
-    # +lib/ganymed/config.yml+ inside the Ganymed source tree.
-    #
-    # @return [Configuration]  The configuration object. See madvertise-ext gem
-    #                          for details.
-    def config
-      @config ||= Configuration.new(Env.mode) do |config|
-        config.mixin(@default_config_file) if @default_config_file
-        config.mixin(@config_file) if @config_file
-      end
+    value = Section.from_hash(value)
+
+    self.deep_merge!(value[:default]) if value.has_key?(:default)
+    self.deep_merge!(value[:generic]) if value.has_key?(:generic)
+
+    if value.has_key?(Env.to_sym)
+      self.deep_merge!(value[Env.to_sym])
+    else
+      self.deep_merge!(value)
+    end
+
+    @callbacks.each do |callback|
+      callback.call
     end
   end
+
+  # Reload all mixins.
+  #
+  # @return [void]
+  def reload!
+    self.clear
+    @mixins.each do |file|
+      self.mixin(file)
+    end
+  end
+
+  # Register a callback for config mixins.
+  #
+  # @return [void]
+  def callback(&block)
+    @callbacks << block
+  end
+
 end
 
 ##
