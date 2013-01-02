@@ -1,40 +1,26 @@
-require 'active_support/core_ext/module/attribute_accessors'
+# encoding: utf-8
+
 require 'madvertise/ext/environment'
 require 'madvertise-logging'
 
-##
-# The {Logging} module provides a global container for the logger object.
-#
-module Logging
-  mattr_accessor :logger
-  self.logger = nil
+def init_logger(progname=$0, filename=nil)
+  progname = File.basename(progname)
+  filename ||= "#{Env.mode}.log"
 
-  # @private
-  def self.create_logger
-    if Env.prod?
-      Madvertise::Logging::ImprovedLogger.new(:syslog, $0)
-    else
-      Madvertise::Logging::ImprovedLogger.new(STDERR, $0)
-    end.tap do |logger|
-      logger.level = :info
-    end
-  end
-
-  ##
-  # The {Logging::Helpers} module is mixed into the Object class to make the
-  # logger available to every object in the system.
-  #
-  module Helpers
-
-    # Retreive and possibly create the global logger object.
-    #
-    # @return [Logger]  The logger object.
-    def log
-      ::Logging.logger ||= ::Logging.create_logger
-    end
+  MultiLogger.new.tap do |logger|
+    init_multi_logger(logger, progname, filename)
   end
 end
 
-class ::Object
-  include ::Logging::Helpers
+def init_multi_logger(logger, progname=$0, filename=nil)
+  if Env.dev? or Env.test?
+    logger.attach(ImprovedLogger.new(STDERR, progname))
+  else
+    logger.attach(ImprovedLogger.new(:syslog, progname))
+  end
+
+  # default log level
+  logger.level = Logger::INFO
 end
+
+$log = init_logger
