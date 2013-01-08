@@ -5,38 +5,38 @@ require 'servolux'
 require 'servolux/cli'
 
 module Servolux
-  def self.init_config(cli_class)
-    config = cli_class.parse_options
+  def self.parse_opts(cli_class)
+    opts = cli_class.parse_options
 
     # CLI.parse_options may have changed $0
     # so we reload the logger for good measure
     $log = init_logger
-    $log.level = config[:debug] ? :debug : :info
+    $log.level = opts[:debug] ? :debug : :info
 
-    return config
+    return opts
   end
 
   def self.wrap(server_class)
-    config = self.init_config(Servolux::CLI)
-    server_class.new(config).run
+    opts = self.parse_opts(Servolux::CLI)
+    server_class.new(opts).run
   rescue => e
     $log.exception(e)
     raise e
   end
 
   def self.wrap_daemon(server_class)
-    config = self.init_config(Servolux::DaemonCLI)
+    opts = self.parse_opts(Servolux::DaemonCLI)
 
-    server = server_class.new(config[:name], config.merge({
+    server = server_class.new(opts[:name], opts.merge({
       interval: 1,
       logger: $log,
-      pid_file: config[:pidfile]
+      pid_file: opts[:pidfile]
     }))
 
-    if config[:daemonize] or config[:kill]
+    if opts[:daemonize] or opts[:kill]
       daemon = Servolux::Daemon.new(:server => server)
 
-      if config[:kill]
+      if opts[:kill]
         daemon.shutdown
       else
         daemon.startup
