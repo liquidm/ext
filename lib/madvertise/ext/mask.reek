@@ -1,7 +1,0 @@
----
-NestedIterators:
-  exclude:
-    - Section#from_hash
-FeatureEnvy:
-  exclude:
-    - Hash#deep_merge

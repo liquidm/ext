@@ -1,8 +1,10 @@
+# encoding: utf-8
+
 require 'yaml'
 require 'set'
 
 require 'madvertise/ext/hash'
-require 'madvertise/ext/environment'
+require 'madvertise/environment'
 
 ##
 # A {Configuration} consists of one or more Sections. A section is a hash-like
@@ -58,30 +60,14 @@ class Section < Hash
 
   end
 
-  # Build the call chain including NilSections.
-  #
   # @private
   def method_missing(name, *args)
     if name.to_s =~ /(.*)=$/
       self[$1.to_sym] = Section.from_value(args.first)
     else
       value = self[name]
-      value = value.call if value.is_a?(Proc)
-
-      if value.nil?
-        case self.class.nil_action
-        when :nil, nil
-          # do nothing
-        when :raise
-          raise "value is nil for key #{name}"
-        when :section
-          value = NilSection.new if value.nil?
-        else
-          raise "unknown nil handling: #{self.class.nil_action}"
-        end
-      end
-
-      self[name] = value
+      self[name] = value.call if value.is_a?(Proc)
+      self[name]
     end
   end
 end
@@ -94,26 +80,18 @@ class Configuration < Section
 
   # Create a new {Configuration} object.
   #
-  # @param [Symbol] mode  The mode to load from the configurtion file
-  #                       (production, development, etc)
   # @yield [config]  The new configuration object.
   def initialize
     @mixins = Set.new
     @callbacks = []
-    yield self if block_given?
-  end
 
-  # Load given mixins from +path+.
-  #
-  # @param [String] path  The path to mixin files.
-  # @param [Array] mixins_to_use  A list of mixins to load from +path+.
-  # @return [void]
-  def load_mixins(path, mixins_to_use)
-    mixins_to_use.map do |mixin_name|
-      File.join(path, "#{mixin_name}.yml")
-    end.each do |mixin_file|
-      mixin(mixin_file)
-    end
+    # defaults
+    mixin({
+      log_backend: :stdout,
+      log_caller: false,
+      log_format: "%{time} %{progname}(%{pid}) [%{severity}] %{msg}\n",
+      log_level: :info,
+    })
   end
 
   # Mixin a configuration snippet into the current section.
@@ -124,24 +102,20 @@ class Configuration < Section
   #                              contain a YAML hash.
   # @return [void]
   def mixin(value)
+    @mixins << value
+
     if value.is_a?(String)
-      @mixins << value
       value = YAML.load(File.read(value))
     end
 
     value = Section.from_hash(value)
 
-    self.deep_merge!(value[:default]) if value.has_key?(:default)
-    self.deep_merge!(value[:generic]) if value.has_key?(:generic)
+    deep_merge!(value[:generic]) if value.has_key?(:generic)
 
     if value.has_key?(Env.to_sym)
-      self.deep_merge!(value[Env.to_sym])
+      deep_merge!(value[Env.to_sym])
     else
-      self.deep_merge!(value)
-    end
-
-    @callbacks.each do |callback|
-      callback.call
+      deep_merge!(value)
     end
   end
 
@@ -149,9 +123,14 @@ class Configuration < Section
   #
   # @return [void]
   def reload!
-    self.clear
+    clear
+
     @mixins.each do |file|
-      self.mixin(file)
+      mixin(file)
+    end
+
+    @callbacks.each do |callback|
+      callback.call
     end
   end
 
@@ -162,46 +141,4 @@ class Configuration < Section
     @callbacks << block
   end
 
-end
-
-##
-# A NilSection is returned for all missing/empty values in the config file. This
-# allows for terse code when accessing values that have not been configured by
-# the user.
-#
-# Consider code like this:
-#
-#   config.server.listen.tap do |listen|
-#     open_socket(listen.host, listen.port)
-#   end
-#
-# Given that your server component is optional and does not appear in the
-# configuration file at all, +config.server.listen+ will return a NilSection
-# that does not call the block given to tap _at all_.
-#
-class NilSection
-  # @return true
-  def nil?
-    true
-  end
-
-  # @return true
-  def empty?
-    true
-  end
-
-  # @return false
-  def present?
-    false
-  end
-
-  # @return nil
-  def tap
-    nil
-  end
-
-  # @private
-  def method_missing(*args, &block)
-    self
-  end
 end

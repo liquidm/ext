@@ -10,6 +10,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Ruby extensions}
   gem.homepage      = "https://github.com/madvertise/ext"
 
+  gem.add_dependency "activesupport"
   gem.add_dependency "madvertise-logging"
   gem.add_dependency "mixlib-cli"
   gem.add_dependency "servolux"
