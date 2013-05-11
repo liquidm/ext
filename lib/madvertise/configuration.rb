@@ -78,20 +78,20 @@ end
 #
 class Configuration < Section
 
+  DEFAULTS = {
+    log_backend: :stdout,
+    log_caller: false,
+    log_format: "%{time} %{progname}(%{pid}) [%{severity}] %{msg}\n",
+    log_level: :info,
+  }
+
   # Create a new {Configuration} object.
   #
   # @yield [config]  The new configuration object.
   def initialize
     @mixins = Set.new
     @callbacks = []
-
-    # defaults
-    mixin({
-      log_backend: :stdout,
-      log_caller: false,
-      log_format: "%{time} %{progname}(%{pid}) [%{severity}] %{msg}\n",
-      log_level: :info,
-    })
+    mixin(DEFAULTS)
   end
 
   # Mixin a configuration snippet into the current section.

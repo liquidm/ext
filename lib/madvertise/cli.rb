@@ -8,8 +8,6 @@ $0 = File.basename($0)
 class CLI
   include Mixlib::CLI
 
-  # TODO: add config and mixin path
-
   option :configfile,
     short: '-c FILE',
     long: '--config FILE',

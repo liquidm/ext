@@ -22,7 +22,6 @@ require 'madvertise/logging' # dedicated gem
 
 # initialize configuration and logger with hardcoded defaults
 $conf = Conf = Configuration.new
-
 $conf.callback do
   ImprovedLogger::Formatter.format = $conf.log_format
   $log = MultiLogger.new
