@@ -4,7 +4,12 @@ begin
 
   desc "Run the specs"
   RSpec::Core::RakeTask.new do |t|
-    t.rspec_opts = ['--options', "spec/spec.opts"]
+    t.verbose = false
+    t.rspec_opts = [
+      '--require', 'spec_helper',
+      '--color',
+      '--format', 'Fuubar'
+    ]
   end
 
   task :default => [:spec]
