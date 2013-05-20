@@ -1,23 +1,22 @@
-# -*- encoding: utf-8 -*-
-require File.expand_path('../lib/madvertise/ext/version', __FILE__)
+# encoding: utf-8
 
-Gem::Specification.new do |gem|
-  gem.name          = "madvertise-ext"
-  gem.version       = Madvertise::Ext::VERSION
-  gem.authors       = ["Benedikt Böhm"]
-  gem.email         = ["benedikt.boehm@madvertise.com"]
-  gem.description   = %q{Ruby extensions}
-  gem.summary       = %q{Ruby extensions}
-  gem.homepage      = "https://github.com/madvertise/ext"
+Gem::Specification.new do |spec|
+  spec.name          = "madvertise-ext"
+  spec.version       = "0.5.2"
+  spec.authors       = ["madvertise Mobile Advertising GmbH"]
+  spec.email         = ["tech@madvertise.com"]
+  spec.description   = %q{Ruby core extensions and helper libraries}
+  spec.summary       = %q{Ruby core extensions and helper libraries}
+  spec.homepage      = "https://github.com/madvertise/ext"
 
-  gem.add_dependency "activesupport"
-  gem.add_dependency "ffi"
-  gem.add_dependency "madvertise-logging"
-  gem.add_dependency "mixlib-cli"
-  gem.add_dependency "servolux"
+  spec.add_dependency "activesupport"
+  spec.add_dependency "ffi"
+  spec.add_dependency "madvertise-logging"
+  spec.add_dependency "mixlib-cli"
+  spec.add_dependency "servolux"
 
-  gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  gem.files         = `git ls-files`.split("\n")
-  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  gem.require_paths = ["lib"]
+  spec.files         = `git ls-files`.split($/)
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = ["lib"]
 end
