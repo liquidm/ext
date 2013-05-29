@@ -26,10 +26,13 @@ end
 
 require 'madvertise/logging' # dedicated gem
 
-# initialize configuration and logger with hardcoded defaults
+# load default configuration
 $conf = Conf = Configuration.new
+
+# callback for madvertise-logging
 $conf.callback do
   ImprovedLogger::Formatter.format = $conf.log_format
+  ImprovedLogger::Formatter.log4j_format = $conf.log4j_format
   $log = MultiLogger.new
   $log.attach(ImprovedLogger.new($conf.log_backend.to_sym, File.basename($0)))
   $log.level = $conf.log_level.downcase.to_sym

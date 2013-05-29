@@ -82,6 +82,7 @@ class Configuration < Section
     log_backend: :stdout,
     log_caller: false,
     log_format: "%{time} %{progname}(%{pid}) [%{severity}] %{msg}\n",
+    log4j_format: "%d %c(%t) [%p] %m%n",
     log_level: :info,
   }
 
