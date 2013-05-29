@@ -67,12 +67,16 @@ class CLI
     $log.info("cli:initialize", cli.config)
     $conf.reload!
 
+    # infer some variables
     opts = cli.config.merge({
-      interval: 1,
-      logger: $log,
+      fqdn: Socket.gethostbyname(Socket.gethostname).first
     })
 
-    cls.new(opts)
+    # sneak in opts without subclassing
+    cls.allocate.tap do |obj|
+      obj.define_singleton_method(:opts) { opts }
+      obj.send(:initialize)
+    end
   end
 
 end
