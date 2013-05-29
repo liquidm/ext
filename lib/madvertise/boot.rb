@@ -1,5 +1,11 @@
 # encoding: utf-8
 
+begin
+  require 'jbundler'
+rescue LoadError
+  # do nothing
+end
+
 # load a bunch of common classes here, so we don't have to track and repeat it
 # everywhere
 require 'active_support/all'
