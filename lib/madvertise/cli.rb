@@ -33,7 +33,7 @@ class CLI
     :description => "Enable debug output",
     :boolean => true,
     :default => false,
-    :proc => ->(value) { $conf.mixin(log_level: :debug) }
+    :proc => ->(value) { $conf.mixin(log_level: value ? :debug : :info); value }
 
   option :help,
     :short => '-h',
