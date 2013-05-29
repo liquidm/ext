@@ -17,15 +17,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport"
   spec.add_dependency "ffi"
   spec.add_dependency "madvertise-logging"
+  spec.add_dependency "metriks"
   spec.add_dependency "mixlib-cli"
   spec.add_dependency "servolux"
-
-  spec.add_development_dependency "awesome_print"
-  spec.add_development_dependency "brice"
-  spec.add_development_dependency "fuubar"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "reek"
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "yard"
 end
