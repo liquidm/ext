@@ -28,7 +28,7 @@ blacklist = [
 ]
 
 Dir[File.join(File.dirname(__FILE__), '*.rb')].each do |f|
-  require f unless blacklist.include?(f)
+  require f unless blacklist.include?(File.basename(f))
 end
 
 require 'madvertise/logging' # dedicated gem
