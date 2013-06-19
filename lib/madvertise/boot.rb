@@ -20,8 +20,15 @@ Dir[File.join(File.dirname(__FILE__), 'ext', '*.rb')].each do |f|
   require f
 end
 
+blacklist = [
+  'tasks.rb',
+  'gc_stats.rb',
+  'sysconf.rb',
+  'proc_stat.rb',
+]
+
 Dir[File.join(File.dirname(__FILE__), '*.rb')].each do |f|
-  require f unless f == 'tasks.rb' # skip special rake tasks
+  require f unless blacklist.include?(f)
 end
 
 require 'madvertise/logging' # dedicated gem

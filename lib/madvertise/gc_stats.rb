@@ -38,7 +38,7 @@ class GCStats
     end
   end
 
-  if RUBY_VERSION =~ /^1\.9/
+  if RUBY_ENGINE == 'ruby' and RUBY_VERSION =~ /^1\.9/
     extend Yarv
   end
 

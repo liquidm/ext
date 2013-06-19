@@ -14,5 +14,4 @@ begin
 
   task :default => [:spec]
 rescue LoadError
-  STDERR.puts "failed to load rspec. please add gem 'rspec' to your Gemfile in order to use rspec"
 end
