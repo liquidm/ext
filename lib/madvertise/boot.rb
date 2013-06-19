@@ -34,7 +34,7 @@ end
 require 'madvertise/logging' # dedicated gem
 
 # load default configuration
-$conf = Conf = Configuration.new
+$conf = Configuration.new
 
 # callback for madvertise-logging
 $conf.callback do
