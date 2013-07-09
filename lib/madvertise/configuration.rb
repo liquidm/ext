@@ -131,7 +131,7 @@ class Configuration < Section
     end
 
     @callbacks.each do |callback|
-      callback.call
+      callback.call(self)
     end
   end
 
