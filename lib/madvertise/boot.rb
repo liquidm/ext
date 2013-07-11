@@ -63,7 +63,7 @@ reload_mixins = ->(conf) do
 end
 
 # reload configuration, trigger callbacks
-$conf.callback(&reload_logger)
 $conf.callback(&reload_mixins)
+$conf.callback(&reload_logger)
 
 $conf.reload!
