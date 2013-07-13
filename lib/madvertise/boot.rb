@@ -49,7 +49,7 @@ end
 reload_mixins = ->(conf) do
   if defined?(ROOT)
     config_yml = File.join(ROOT, 'config.yml')
-    conf.mixin(config_yml)
+    conf.mixin(config_yml) if File.exist?(config_yml)
 
     dot_user = File.join(ROOT, '.user')
 
