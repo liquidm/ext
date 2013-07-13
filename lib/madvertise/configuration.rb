@@ -4,6 +4,7 @@ require 'yaml'
 require 'set'
 
 require 'madvertise/ext/hash'
+require 'madvertise/ext/ordered_set'
 require 'madvertise/environment'
 
 ##
@@ -90,7 +91,7 @@ class Configuration < Section
   #
   # @yield [config]  The new configuration object.
   def initialize
-    @mixins = Set.new
+    @mixins = OrderedSet.new
     @callbacks = []
     mixin(DEFAULTS)
   end
