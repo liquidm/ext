@@ -12,7 +12,6 @@ require 'active_support/all'
 require 'cgi'
 require 'date'
 require 'json'
-require 'servolux'
 require 'socket'
 require 'madvertise-logging'
 
