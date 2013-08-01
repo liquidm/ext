@@ -31,6 +31,10 @@ Dir[File.join(File.dirname(__FILE__), '*.rb')].each do |f|
   require f unless blacklist.include?(File.basename(f))
 end
 
+if defined?(ROOT)
+  $:.unshift(ROOT)
+end
+
 # load default configuration
 $conf = Configuration.new
 

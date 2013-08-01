@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "madvertise-ext"
-  spec.version       = "0.7.0"
+  spec.version       = "0.7.1"
   spec.authors       = ["madvertise Mobile Advertising GmbH"]
   spec.email         = ["tech@madvertise.com"]
   spec.description   = %q{Ruby core extensions and helper libraries}
@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "ffi"
-  spec.add_dependency "madvertise-logging"
+  spec.add_dependency "madvertise-logging", ">= 1.2.1"
   spec.add_dependency "metriks"
   spec.add_dependency "mixlib-cli"
 end
