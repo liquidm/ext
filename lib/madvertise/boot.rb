@@ -1,9 +1,21 @@
 # encoding: utf-8
 
-begin
-  require 'jbundler'
-rescue LoadError
-  # do nothing
+$:.unshift(ROOT) if defined?(ROOT)
+
+if RUBY_PLATFORM == 'java'
+  begin
+    require 'jbundler'
+  rescue LoadError
+    # do nothing
+  end
+
+  # some java libraries cannot be found on maven central, so we load all bundled
+  # jar files here for convenience
+  if defined?(ROOT)
+    Dir[File.join(ROOT, 'jars', '*.jar')].each do |f|
+      require f
+    end
+  end
 end
 
 # load a bunch of common classes here, so we don't have to track and repeat it
@@ -29,10 +41,6 @@ blacklist = [
 
 Dir[File.join(File.dirname(__FILE__), '*.rb')].each do |f|
   require f unless blacklist.include?(File.basename(f))
-end
-
-if defined?(ROOT)
-  $:.unshift(ROOT)
 end
 
 # load default configuration
