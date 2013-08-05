@@ -2,48 +2,10 @@
 
 $:.unshift(ROOT) if defined?(ROOT)
 
-if RUBY_PLATFORM == 'java'
-  begin
-    require 'jbundler'
-  rescue LoadError
-    # do nothing
-  end
-
-  # some java libraries cannot be found on maven central, so we load all bundled
-  # jar files here for convenience
-  if defined?(ROOT)
-    Dir[File.join(ROOT, 'jars', '*.jar')].each do |f|
-      require f
-    end
-  end
-end
-
-# load a bunch of common classes here, so we don't have to track and repeat it
-# everywhere
-require 'active_support/all'
-require 'cgi'
-require 'date'
-require 'json'
-require 'socket'
-require 'madvertise-logging'
-
-# load all madvertise extensions
-Dir[File.join(File.dirname(__FILE__), 'ext', '*.rb')].each do |f|
-  require f
-end
-
-blacklist = [
-  'tasks.rb',
-  'gc_stats.rb',
-  'sysconf.rb',
-  'proc_stat.rb',
-]
-
-Dir[File.join(File.dirname(__FILE__), '*.rb')].each do |f|
-  require f unless blacklist.include?(File.basename(f))
-end
-
 # load default configuration
+require 'madvertise-logging'
+require 'madvertise/configuration'
+
 $conf = Configuration.new
 
 # configuration-reloading callbacks
@@ -78,3 +40,39 @@ $conf.callback(&reload_mixins)
 $conf.callback(&reload_logger)
 
 $conf.reload!
+
+# load java dependencies
+if RUBY_PLATFORM == 'java'
+  begin
+    require 'jbundler'
+  rescue LoadError
+    # do nothing
+  end
+
+  # some java libraries cannot be found on maven central, so we load all bundled
+  # jar files here for convenience
+  if defined?(ROOT)
+    Dir[File.join(ROOT, 'jars', '*.jar')].each do |f|
+      require f
+    end
+  end
+end
+
+# load a bunch of common classes here, so we don't have to track and repeat it
+# everywhere
+require 'active_support/all'
+require 'cgi'
+require 'date'
+require 'json'
+require 'socket'
+
+# load all madvertise extensions
+Dir[File.join(File.dirname(__FILE__), 'ext', '*.rb')].each do |f|
+  require f
+end
+
+require 'madvertise/cli'
+require 'madvertise/environment'
+require 'madvertise/from_file'
+require 'madvertise/hash_helper'
+require 'madvertise/transaction_id'
