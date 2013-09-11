@@ -110,6 +110,8 @@ class Configuration < Section
       value = YAML.load(File.read(value))
     end
 
+    return unless value
+
     value = Section.from_hash(value)
 
     deep_merge!(value[:generic]) if value.has_key?(:generic)
