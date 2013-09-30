@@ -17,6 +17,9 @@ reload_logger = ->(conf) do
   $log.attach(ImprovedLogger.new(conf.log_backend.to_sym, File.basename($0)))
   $log.level = conf.log_level.downcase.to_sym
   $log.log_caller = conf.log_caller
+
+  # sneak this in automatically
+  ZK.logger = $log if ::Module.const_defined?(:ZK)
 end
 
 reload_mixins = ->(conf) do
@@ -65,6 +68,7 @@ require 'cgi'
 require 'date'
 require 'json'
 require 'socket'
+require 'time'
 
 # load all madvertise extensions
 Dir[File.join(File.dirname(__FILE__), 'ext', '*.rb')].each do |f|
