@@ -3,8 +3,6 @@
 require 'madvertise/boot'
 require 'mixlib/cli'
 
-$0 = File.basename($0)
-
 class CLI
   include Mixlib::CLI
 
@@ -17,7 +15,7 @@ class CLI
     :short => '-n NAME',
     :long => '--name NAME',
     :description => 'Process name',
-    :default => $0,
+    :default => File.basename($0),
     :proc => ->(value) { $0 = value }
 
   option :environment,
