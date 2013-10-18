@@ -82,9 +82,17 @@ class Configuration < Section
   DEFAULTS = {
     log_backend: :stdout,
     log_caller: false,
+    log_level: :info,
     log_format: "%{time} %{progname}(%{pid}) [%{severity}] %{msg}\n",
     log4j_format: "%d %c(%t) [%p] %m%n",
-    log_level: :info,
+    production: {
+      log_format: "%{msg}\n",
+      log4j_format: "%m%n",
+    },
+    staging: {
+      log_format: "%{msg}\n",
+      log4j_format: "%m%n",
+    },
   }
 
   # Create a new {Configuration} object.

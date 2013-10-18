@@ -32,14 +32,23 @@ class Environment
   end
 
   # Return true if the current environment is +production+.
-  def prod?
+  def production?
     to_sym == :production
   end
 
+  alias :prod? :production?
+
+  # Return true if the current environment is +production+.
+  def staging?
+    to_sym == :staging
+  end
+
   # Return true if the current environment is +development+.
-  def dev?
+  def development?
     to_sym == :development
   end
+
+  alias :dev? :development?
 
   # Return true if the current environment is +test+.
   def test?
