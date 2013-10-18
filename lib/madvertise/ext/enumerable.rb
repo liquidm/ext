@@ -1,8 +1,6 @@
-module Enumerable
-  def sum
-    reduce(:+)
-  end
+require 'active_support/core_ext/enumerable'
 
+module Enumerable
   def mean
     sum.to_f / length
   end
