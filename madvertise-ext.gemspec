@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "madvertise-ext"
-  spec.version       = "0.9.7"
+  spec.version       = "0.9.8"
   spec.authors       = ["madvertise Mobile Advertising GmbH"]
   spec.email         = ["tech@madvertise.com"]
   spec.description   = %q{Ruby core extensions and helper libraries}
