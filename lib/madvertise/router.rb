@@ -13,7 +13,7 @@ class Router
 
     @cache = Hash.new do |hash, path|
       hash[path] = nil
-      @routes.each do |regex, block|
+      @routes.each do |regex, block, args|
         match = path.match(regex)
         hash[path] = block.curry[match] if match
       end

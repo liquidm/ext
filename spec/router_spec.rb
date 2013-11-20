@@ -12,7 +12,7 @@ describe Router do
   describe '.add' do
     context 'add route' do
 
-      before { router.add(regex, &block) }
+      before { router.add(regex, [:args], &block) }
 
       context 'regex' do
         subject { router.routes.last[0] }
@@ -22,6 +22,11 @@ describe Router do
       context 'block' do
         subject { router.routes.last[1] }
         its(:call) { should eql block.call }
+      end
+
+      context 'args' do
+        subject { router.routes.last[2] }
+        it { should eql [:args] }
       end
     end
   end
@@ -50,13 +55,13 @@ describe Router do
     let(:handler) { double('MockHandler') }
     let(:request) { double('request') }
     let(:url_re_1) { 'http://ad.madvertise.de/uchte/(.*?)' }
-    let(:url_re_2) { 'http://ad.madvertise.de/muchte/(*?)' }
+    let(:url_re_2) { 'http://ad.madvertise.de/muchte/(.*?)' }
     let(:block) { Proc.new {|match, env| handler.handle(match, env) } }
 
     before do
-      router.add url_re_1 { }
-      router.add url_re_2, &block
-      router.route %r(/new_adx_bidrequest/(\w+)), GeneralRequestHandler, :site_token
+      router.add url_re_1, [:foo] { }
+      router.add url_re_2, [:bar], &block
+      router.route %r(/new_adx_bidrequest/([\w.-]+)), GeneralRequestHandler, :site_token
     end
 
     it 'is not matching' do
