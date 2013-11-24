@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'madvertise/router'
+require 'liquid/router'
 require 'terminal-table'
 
 desc "Show all ed routes"

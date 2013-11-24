@@ -19,4 +19,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "liquid-logging", ">= 2.0.0"
   spec.add_dependency "metriks"
   spec.add_dependency "mixlib-cli"
+  spec.add_dependency "terminal-table"
 end

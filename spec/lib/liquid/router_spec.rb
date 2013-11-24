@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'madvertise/router'
+require 'liquid/router'
 
 class GeneralRequestHandler; end
 

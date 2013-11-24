@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'madvertise/from_file'
+require 'liquid/from_file'
 
 class Router
   include FromFile
@@ -38,7 +38,7 @@ class Router
 
     add(regexp, args, &block)
   end
-  
+
   def handle(path, request)
     @cache[path].call(request) if @cache[path]
     return !! @cache[path]
