@@ -2,7 +2,9 @@
 
 The liquid-ext gem provides a bunch of ruby extensions and common startup/runtime code.
 
-[![Build Status](https://secure.travis-ci.org/liquidm/ext.png)](http://travis-ci.org/liquid/ext)
+[![Build Status](https://secure.travis-ci.org/liquidm/ext.png)](http://travis-ci.org/liquidm/ext)
+[![Code Climate](https://codeclimate.com/github/liquidm/ext.png)](https://codeclimate.com/github/liquidm/ext)
+[![Dependency Status](https://gemnasium.com/liquidm/ext.png)](https://gemnasium.com/liquidm/ext)
 
 ## Installation
 
