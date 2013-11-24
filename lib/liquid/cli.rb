@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'madvertise/boot'
+require 'liquid/boot'
 require 'mixlib/cli'
 
 class CLI

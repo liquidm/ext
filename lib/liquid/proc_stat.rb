@@ -1,4 +1,4 @@
-require 'madvertise/sysconf'
+require 'liquid/sysconf'
 
 ProcStat = Struct.new(
   :ppid,

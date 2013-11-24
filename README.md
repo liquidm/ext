@@ -1,14 +1,14 @@
-# Madvertise::Ext
+# Liquid Extensions
 
-The madvertise-ext gem provides a bunch of ruby extensions.
+The liquid-ext gem provides a bunch of ruby extensions and common startup/runtime code.
 
-[![Build Status](https://secure.travis-ci.org/madvertise/ext.png)](http://travis-ci.org/madvertise/ext)
+[![Build Status](https://secure.travis-ci.org/liquidm/ext.png)](http://travis-ci.org/liquid/ext)
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'madvertise-ext'
+    gem 'liquid-ext'
 
 And then execute:
 
@@ -16,11 +16,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install madvertise-ext
+    $ gem install liquid-ext
 
 ## Usage
 
-Please refer to the [API documentation](http://rubydoc.info/gems/madvertise-ext/frames).
+Please refer to the [API documentation](http://rubydoc.info/gems/liquid-ext/frames).
 
 ## Contributing
 

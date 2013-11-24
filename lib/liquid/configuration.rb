@@ -3,9 +3,9 @@
 require 'yaml'
 require 'set'
 
-require 'madvertise/ext/hash'
-require 'madvertise/ext/ordered_set'
-require 'madvertise/environment'
+require 'liquid/ext/hash'
+require 'liquid/ext/ordered_set'
+require 'liquid/environment'
 
 ##
 # A {Configuration} consists of one or more Sections. A section is a hash-like

@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/spec_helper'
-require 'madvertise/ext/enumerable'
+require 'liquid/ext/enumerable'
 
 describe Enumerable do
 

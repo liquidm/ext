@@ -3,8 +3,8 @@
 $:.unshift(ROOT) if defined?(ROOT)
 
 # load default configuration
-require 'madvertise-logging'
-require 'madvertise/configuration'
+require 'liquid-logging'
+require 'liquid/configuration'
 
 $conf = Configuration.new
 
@@ -70,13 +70,17 @@ require 'json'
 require 'socket'
 require 'time'
 
-# load all madvertise extensions
+# load all extensions
 Dir[File.join(File.dirname(__FILE__), 'ext', '*.rb')].each do |f|
   require f
 end
 
-require 'madvertise/cli'
-require 'madvertise/environment'
-require 'madvertise/from_file'
-require 'madvertise/hash_helper'
-require 'madvertise/transaction_id'
+if RUBY_PLATFORM == 'java'
+  require 'liquid/benchmark'
+end
+
+require 'liquid/cli'
+require 'liquid/environment'
+require 'liquid/from_file'
+require 'liquid/hash_helper'
+require 'liquid/transaction_id'
