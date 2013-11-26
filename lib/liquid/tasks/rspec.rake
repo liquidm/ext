@@ -6,9 +6,9 @@ begin
   RSpec::Core::RakeTask.new do |t|
     t.verbose = false
     t.rspec_opts = [
-      '--require', 'spec_helper',
       '--color',
-      '--format', 'Fuubar'
+      '--require', 'spec_helper',
+      '--format', 'documentation'
     ]
   end
 
