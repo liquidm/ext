@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "liquid-ext"
-  spec.version       = "1.2.6"
+  spec.version       = "2.0.0"
   spec.authors       = ["LiquidM, Inc."]
   spec.email         = ["opensource@liquidm.com"]
   spec.description   = %q{Ruby core extensions and helper libraries}
@@ -15,11 +15,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.extensions    = ["Rakefile"]
+
   spec.add_dependency "activesupport"
   spec.add_dependency "erubis"
-  spec.add_dependency "ffi"
   spec.add_dependency "liquid-logging", ">= 2.0.0"
-  spec.add_dependency "metriks"
+  spec.add_dependency "lock_jar"
   spec.add_dependency "mixlib-cli"
   spec.add_dependency "terminal-table"
 end
