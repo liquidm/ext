@@ -1,9 +1,9 @@
-java_import 'java.lang.System'
+require 'liquid/timing'
 
 module Benchmark
   def realtime(&block)
-    t0 = System.nano_time
+    timing = Timing.start
     yield
-    ((System.nano_time - t0).to_f / 1_000_000_000).round(3)
+    timing.runtime
   end
 end

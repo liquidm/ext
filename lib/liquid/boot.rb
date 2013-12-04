@@ -75,12 +75,10 @@ Dir[File.join(File.dirname(__FILE__), 'ext', '*.rb')].each do |f|
   require f
 end
 
-if RUBY_PLATFORM == 'java'
-  require 'liquid/benchmark'
-end
-
+require 'liquid/benchmark'
 require 'liquid/cli'
 require 'liquid/environment'
 require 'liquid/from_file'
 require 'liquid/hash_helper'
+require 'liquid/timing'
 require 'liquid/transaction_id'
