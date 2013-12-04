@@ -4,6 +4,6 @@ module Benchmark
   def realtime(&block)
     timing = Timing.start
     yield
-    timing.runtime
+    timing.stop
   end
 end
