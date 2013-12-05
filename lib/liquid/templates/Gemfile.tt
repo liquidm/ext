@@ -1,0 +1,9 @@
+source 'https://rubygems.org'
+
+gem 'jbundler', platforms: :jruby
+
+gemspec
+
+group :development, :test do
+  gem 'liquid-development'
+end

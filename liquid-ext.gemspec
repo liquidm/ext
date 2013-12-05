@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "liquid-ext"
-  spec.version       = "1.1.1"
+  spec.version       = "1.2.0"
   spec.authors       = ["LiquidM, Inc."]
   spec.email         = ["opensource@liquidm.com"]
   spec.description   = %q{Ruby core extensions and helper libraries}
@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activesupport"
+  spec.add_dependency "erubis"
   spec.add_dependency "ffi"
   spec.add_dependency "liquid-logging", ">= 2.0.0"
   spec.add_dependency "metriks"

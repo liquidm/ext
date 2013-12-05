@@ -1,0 +1,28 @@
+# encoding: utf-8
+
+module <%=config[:constant_name]%>
+  class Server
+
+    def initialize
+      $log.info("<%=config[:name]%>:boot #{RUBY_DESCRIPTION}")
+      $log.info("<%=config[:name]%>:boot", {
+        env: Env.mode,
+      })
+
+      Signal.register_shutdown_handler { shutdown }
+    end
+
+    def shutdown
+      $log.info("<%=config[:name]%>:server", shutdown: :complete)
+      exit(0)
+    rescue => e
+      $log.exception(e, "shutdown failed")
+      exit(-1)
+    end
+
+    def run
+      sleep
+    end
+
+  end
+end

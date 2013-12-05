@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+ROOT = File.expand_path('../..', __FILE__)
+
+require 'bundler/setup'
+require 'liquid/boot'
+
+require 'liquid/generator'
+
+CLI.for(Liquid::Generator) do
+  option :author,
+    :short => '-a',
+    :long => '--author',
+    :description => 'Gem author',
+    :default => `git config user.name`.chomp
+
+  option :email,
+    :short => '-e',
+    :long => '--email',
+    :description => 'Author E-Mail',
+    :default => `git config user.email`.chomp
+end.run

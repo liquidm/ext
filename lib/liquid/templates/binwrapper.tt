@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+ROOT = File.expand_path('../..', __FILE__)
+
+require 'bundler/setup'
+require 'liquid/boot'
+
+require '<%=config[:name]%>/server'
+
+CLI.for(<%=config[:constant_name]%>::Server).run
