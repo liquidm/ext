@@ -27,6 +27,12 @@ describe WeightedSelector do
 
     context do
 
+      its(:pick_one){ should == nil }
+
+    end
+
+    context do
+
       before do
         subject.add 'a', 2
         subject.add 'b', 2

@@ -39,7 +39,7 @@ class WeightedSelector
   end
 
   def pick_one
-    pick_one_with_index[0]
+    pick_one_with_index[0] unless empty?
   end
 
 end
