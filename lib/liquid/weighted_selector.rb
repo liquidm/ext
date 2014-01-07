@@ -42,4 +42,8 @@ class WeightedSelector
     pick_one_with_index[0] unless empty?
   end
 
+  def pick
+    pick_one
+  end
+
 end
