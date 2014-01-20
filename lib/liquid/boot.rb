@@ -52,6 +52,13 @@ if RUBY_PLATFORM == 'java'
     # do nothing
   end
 
+  begin
+    require 'lock_jar'
+    LockJar.load
+  rescue LoadError
+    # do nothing
+  end
+
   # some java libraries cannot be found on maven central, so we load all bundled
   # jar files here for convenience
   if defined?(ROOT)
