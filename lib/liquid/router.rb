@@ -41,5 +41,6 @@ class Router
 
   def handle(path, request)
     @cache[path].call(request) if @cache[path]
+    return !! @cache[path]
   end
 end
