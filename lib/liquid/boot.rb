@@ -2,6 +2,30 @@
 
 $:.unshift(ROOT) if defined?(ROOT)
 
+# load java dependencies
+if RUBY_PLATFORM == 'java'
+  begin
+    require 'jbundler'
+  rescue LoadError
+    # do nothing
+  end
+
+  begin
+    require 'lock_jar'
+    LockJar.load
+  rescue LoadError
+    # do nothing
+  end
+
+  # some java libraries cannot be found on maven central, so we load all bundled
+  # jar files here for convenience
+  if defined?(ROOT)
+    Dir[File.join(ROOT, 'jars', '*.jar')].each do |f|
+      require f
+    end
+  end
+end
+
 # load default configuration
 require 'liquid-logging'
 require 'liquid/configuration'
@@ -43,30 +67,6 @@ $conf.callback(&reload_mixins)
 $conf.callback(&reload_logger)
 
 $conf.reload!
-
-# load java dependencies
-if RUBY_PLATFORM == 'java'
-  begin
-    require 'jbundler'
-  rescue LoadError
-    # do nothing
-  end
-
-  begin
-    require 'lock_jar'
-    LockJar.load
-  rescue LoadError
-    # do nothing
-  end
-
-  # some java libraries cannot be found on maven central, so we load all bundled
-  # jar files here for convenience
-  if defined?(ROOT)
-    Dir[File.join(ROOT, 'jars', '*.jar')].each do |f|
-      require f
-    end
-  end
-end
 
 # load a bunch of common classes here, so we don't have to track and repeat it
 # everywhere
