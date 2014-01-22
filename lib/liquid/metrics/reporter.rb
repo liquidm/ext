@@ -26,7 +26,7 @@ class Metrics
 
     def duration_unit=(value)
       @duration_unit = value
-      @duration_factor = value.to_s.downcase
+      @duration_factor = 1.0 / value.to_nanos(1)
     end
 
     def run
@@ -40,8 +40,8 @@ class Metrics
     end
 
     def start(period = nil, unit = nil)
-      period ||= 1
-      unit ||= TimeUnit::MINUTES
+      period ||= 10
+      unit ||= TimeUnit::SECONDS
       @executor.scheduleAtFixedRate(self, period, period, unit)
     end
 
@@ -124,7 +124,6 @@ class Metrics
         m1: convert_rate(meter.getOneMinuteRate),
         m5: convert_rate(meter.getFiveMinuteRate),
         m15: convert_rate(meter.getFifteenMinuteRate),
-        rate_unit: @rate_unit,
       }
     end
 
@@ -147,8 +146,6 @@ class Metrics
         m1: convert_rate(timer.getOneMinuteRate),
         m5: convert_rate(timer.getFiveMinuteRate),
         m15: convert_rate(timer.getFifteenMinuteRate),
-        rate_unit: @rate_unit,
-        duration_unit: @duration_unit,
       }
     end
 

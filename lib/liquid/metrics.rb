@@ -12,28 +12,27 @@ class Metrics
 
   def initialize
     @registry = MetricRegistry.new
-    JmxReporter.forRegistry(@registry).build.start
-    # TODO: only for testing
-    LoggerReporter.new(@registry).start
+    @reporters = [
+      JmxReporter.forRegistry(@registry).build,
+      LoggerReporter.new(@registry),
+    ]
+    @reporters.each(&:start)
+    Signal.register_shutdown_handler { @reporters.each(&:stop) }
   end
 
-  def self.registry
-    instance.registry
-  end
-
-  def self.counter(name)
+  def counter(name)
     registry.counter(name)
   end
 
-  def self.meter(name)
+  def meter(name)
     registry.meter(name)
   end
 
-  def self.histogram(name)
+  def histogram(name)
     registry.histogram(name)
   end
 
-  def self.timer(name)
+  def timer(name)
     registry.timer(name)
   end
 end
