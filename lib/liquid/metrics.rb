@@ -5,34 +5,36 @@ java_import 'com.codahale.metrics.JmxReporter'
 
 require 'liquid/metrics/logger_reporter'
 
-class Metrics
-  include Singleton
+module Metrics
 
-  attr_reader :registry
+  @@registry = MetricRegistry.new
 
-  def initialize
-    @registry = MetricRegistry.new
-    @reporters = [
-      JmxReporter.forRegistry(@registry).build,
-      LoggerReporter.new(@registry),
+  def self.start
+    reporters = [
+      JmxReporter.forRegistry(@@registry).build,
+      LoggerReporter.new(@@registry),
     ]
-    @reporters.each(&:start)
-    Signal.register_shutdown_handler { @reporters.each(&:stop) }
+    reporters.each(&:start)
+    Signal.register_shutdown_handler { reporters.each(&:stop) }
   end
 
-  def counter(name)
+  def self.registry
+    @@registry
+  end
+
+  def self.counter(name)
     registry.counter(name)
   end
 
-  def meter(name)
+  def self.meter(name)
     registry.meter(name)
   end
 
-  def histogram(name)
+  def self.histogram(name)
     registry.histogram(name)
   end
 
-  def timer(name)
+  def self.timer(name)
     registry.timer(name)
   end
 end

@@ -1,6 +1,6 @@
 require 'liquid/metrics/reporter'
 
-class Metrics
+module Metrics
   class LoggerReporter < Reporter
 
     attr_accessor :logger

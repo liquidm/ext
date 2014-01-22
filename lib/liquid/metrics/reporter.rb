@@ -4,7 +4,7 @@ java_import 'com.codahale.metrics.MetricFilter'
 java_import 'java.util.concurrent.Executors'
 java_import 'java.util.concurrent.TimeUnit'
 
-class Metrics
+module Metrics
   class Reporter
 
     attr_accessor :filter
