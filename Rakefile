@@ -1,6 +1,10 @@
-require "bundler/setup"
-require "bundler/gem_tasks"
-require "liquid/tasks"
+begin
+  require "bundler/setup"
+  require "bundler/gem_tasks"
+  require "liquid/tasks"
+rescue LoadError
+  # do nothing
+end
 
 task :default => :prepare
 task :prepare do
