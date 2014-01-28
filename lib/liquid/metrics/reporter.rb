@@ -107,11 +107,7 @@ module Metrics
         mean: snapshot.getMean,
         stdev: snapshot.getStdDev,
         median: snapshot.getMedian,
-        p75: snapshot.get75thPercentile,
-        p95: snapshot.get95thPercentile,
-        p98: snapshot.get98thPercentile,
-        p99: snapshot.get99thPercentile,
-        p999: snapshot.get999thPercentile,
+        :'95th_percentile' => snapshot.get95thPercentile,
       }
     end
 
@@ -121,9 +117,9 @@ module Metrics
         name: name,
         count: meter.count,
         mean_rate: convert_rate(meter.getMeanRate),
-        m1: convert_rate(meter.getOneMinuteRate),
-        m5: convert_rate(meter.getFiveMinuteRate),
-        m15: convert_rate(meter.getFifteenMinuteRate),
+        one_minute_rate: convert_rate(meter.getOneMinuteRate),
+        five_minute_rate: convert_rate(meter.getFiveMinuteRate),
+        fifteen_minute_rate: convert_rate(meter.getFifteenMinuteRate),
       }
     end
 
@@ -137,15 +133,11 @@ module Metrics
         mean: convert_duration(snapshot.getMean),
         stdev: convert_duration(snapshot.getStdDev),
         median: convert_duration(snapshot.getMedian),
-        p75: convert_duration(snapshot.get75thPercentile),
-        p95: convert_duration(snapshot.get95thPercentile),
-        p98: convert_duration(snapshot.get98thPercentile),
-        p99: convert_duration(snapshot.get99thPercentile),
-        p999: convert_duration(snapshot.get999thPercentile),
+        :'95th_percentile' => convert_duration(snapshot.get95thPercentile),
         mean_rate: convert_rate(timer.getMeanRate),
-        m1: convert_rate(timer.getOneMinuteRate),
-        m5: convert_rate(timer.getFiveMinuteRate),
-        m15: convert_rate(timer.getFifteenMinuteRate),
+        one_minute_rate: convert_rate(timer.getOneMinuteRate),
+        five_minute_rate: convert_rate(timer.getFiveMinuteRate),
+        fifteen_minute_rate: convert_rate(timer.getFifteenMinuteRate),
       }
     end
 

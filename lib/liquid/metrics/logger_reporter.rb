@@ -9,7 +9,7 @@ module Metrics
     def initialize(registry)
       super
       @logger = $log
-      @marker = "metrics:"
+      @marker = "metriks:"
     end
 
     def report_gauge(name, gauge)
