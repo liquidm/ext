@@ -6,9 +6,9 @@ rescue LoadError
   # do nothing
 end
 
-task :default => :prepare
-task :prepare do
-  require 'lock_jar'
-  lockfile = File.expand_path("../Jarfile.lock", __FILE__)
-  LockJar.install(lockfile: lockfile)
-end
+# task :default => :prepare
+# task :prepare do
+#   require 'lock_jar'
+#   lockfile = File.expand_path("../Jarfile.lock", __FILE__)
+#   LockJar.install(lockfile: lockfile)
+# end
