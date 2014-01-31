@@ -17,9 +17,6 @@ Gem::Specification.new do |spec|
 
   spec.extensions    = ["Rakefile"]
 
-  spec.add_dependency "brice"
-  spec.add_dependency "parallel"
-  spec.add_dependency "rake"
   spec.add_dependency "activesupport"
   spec.add_dependency "erubis"
   spec.add_dependency "liquid-logging", ">= 2.0.0"
