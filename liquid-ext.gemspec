@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport"
   spec.add_dependency "erubis"
   spec.add_dependency "liquid-logging", ">= 2.0.0"
-  spec.add_dependency "lock_jar"
   spec.add_dependency "mixlib-cli"
   spec.add_dependency "terminal-table"
 end
