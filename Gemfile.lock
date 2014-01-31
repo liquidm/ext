@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    liquid-ext (2.0.0)
+    liquid-ext (2.0.1)
       activesupport
       erubis
       liquid-logging (>= 2.0.0)

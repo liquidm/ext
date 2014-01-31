@@ -40,8 +40,8 @@ module Metrics
     end
 
     def start(period = nil, unit = nil)
-      period ||= 10
-      unit ||= TimeUnit::SECONDS
+      period ||= 5
+      unit ||= TimeUnit::MINUTES
       @executor.scheduleAtFixedRate(self, period, period, unit)
     end
 
