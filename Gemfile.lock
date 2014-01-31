@@ -3,10 +3,13 @@ PATH
   specs:
     liquid-ext (2.0.0)
       activesupport
+      brice
       erubis
       liquid-logging (>= 2.0.0)
       lock_jar
       mixlib-cli
+      parallel
+      rake
       terminal-table
 
 GEM
