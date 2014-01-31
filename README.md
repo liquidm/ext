@@ -1,6 +1,7 @@
 # Liquid Extensions
 
-The liquid-ext gem provides a bunch of ruby extensions and common startup/runtime code.
+The liquid-ext gem provides a bunch of ruby extensions and common
+startup/runtime code. Only JRuby 1.7 is currently supported.
 
 [![Gem Version](https://badge.fury.io/rb/liquid-ext.png)](http://badge.fury.io/rb/liquid-ext)
 [![Build Status](https://secure.travis-ci.org/liquidm/ext.png)](http://travis-ci.org/liquidm/ext)
