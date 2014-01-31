@@ -2,8 +2,8 @@
 *.rbc
 .bundle
 .config
+.jbundler/
 .yardoc
-Gemfile.lock
 InstalledFiles
 _yardoc
 coverage

@@ -1,8 +1,13 @@
 language: ruby
 rvm:
 - jruby
-- 2.0.0
-- 1.9.3
+env:
+- JRUBY_OPTS="--debug -J-Xmx4g -J-XX:MaxPermSize=1g"
+install:
+- bundle install --without development --deployment
+- bundle exec lockjar install
+script:
+- bundle exec rspec --format documentation
 notifications:
   email: false
   hipchat:

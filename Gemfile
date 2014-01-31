@@ -1,7 +1,6 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gemspec
 
-group :development, :test do
-  gem "liquid-development"
-end
+gem 'lock_jar'
+gem 'liquid-development'
