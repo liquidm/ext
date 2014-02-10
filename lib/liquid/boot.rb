@@ -1,6 +1,9 @@
 # encoding: utf-8
 
-$:.unshift(ROOT) if defined?(ROOT)
+if defined?(ROOT)
+  $:.unshift(File.join(ROOT, 'lib'))
+  $:.unshift(ROOT)
+end
 
 # load java dependencies
 if RUBY_PLATFORM == 'java'

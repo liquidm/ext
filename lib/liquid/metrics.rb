@@ -1,9 +1,14 @@
 require 'singleton'
 
+java_import 'com.codahale.metrics.Histogram'
 java_import 'com.codahale.metrics.MetricRegistry'
 java_import 'com.codahale.metrics.JmxReporter'
 
 require 'liquid/metrics/logger_reporter'
+
+class Histogram
+  java_alias :update_long, :update, [Java::long]
+end
 
 module Metrics
 

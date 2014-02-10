@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "liquid-ext"
-  spec.version       = "2.0.1"
+  spec.version       = "2.0.2"
   spec.authors       = ["LiquidM, Inc."]
   spec.email         = ["opensource@liquidm.com"]
   spec.description   = %q{Ruby core extensions and helper libraries}
