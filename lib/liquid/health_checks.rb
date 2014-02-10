@@ -1,5 +1,6 @@
 require 'singleton'
 
+require_relative '../metrics-healthchecks-3.0.1.jar'
 java_import 'com.codahale.metrics.health.HealthCheckRegistry'
 
 class HealthChecks
