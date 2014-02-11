@@ -6,8 +6,8 @@ class TransactionId
     @@current
   end
 
-  def self.next
-    @@current = "#{Time.now.to_i}-#{Process.pid}-#{rand(89999) + 10000}"
+  def self.next(seed = 10000)
+    @@current = "#{Time.now.to_i}-#{Process.pid}-#{rand(89999) + seed}"
   end
 
 end
