@@ -54,23 +54,21 @@ describe Router do
   describe '.handle' do
     let(:handler) { double('MockHandler') }
     let(:request) { double('request') }
-    let(:url_re_1) { 'http://ad.madvertise.de/uchte/(.*?)' }
-    let(:url_re_2) { 'http://ad.madvertise.de/muchte/(.*?)' }
-    let(:block) { Proc.new {|match, env| handler.handle(match, env) } }
+    let(:url_re_1) { 'http://ad.madvertise.de/muchte/(.*?)' }
+    let(:block) { Proc.new { |match, env| handler.handle(match, env) } }
 
     before do
-      router.add url_re_1, [:foo] { }
-      router.add url_re_2, [:bar], &block
+      router.add url_re_1, [:foo], &block
       router.route %r(/new_adx_bidrequest/([\w.-]+)), GeneralRequestHandler, :site_token
     end
 
     it 'is not matching' do
-      router.handle("http://ad.madvertise.de/muchtel", request).should == false
+      router.handle("http://ad.madvertise.de/muchtel", request).should == nil
     end
 
     it 'is matching' do
-      handler.should_receive(:handle)
-      router.handle("http://ad.madvertise.de/muchte/foo", request).should == true
+      handler.should_receive(:handle).and_return("bar")
+      router.handle("http://ad.madvertise.de/muchte/foo", request).should == "bar"
     end
   end
 end

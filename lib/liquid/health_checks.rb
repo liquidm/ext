@@ -1,19 +1,13 @@
-require 'singleton'
+require 'liquid/logger'
 
 require_relative '../metrics-healthchecks-3.0.1.jar'
 java_import 'com.codahale.metrics.health.HealthCheckRegistry'
 
 class HealthChecks
-  include Singleton
-
-  attr_reader :registry
-
-  def initialize
-    @registry = HealthCheckRegistry.new
-  end
+  @registry = HealthCheckRegistry.new
 
   def self.registry
-    instance.registry
+    @registry
   end
 
   def self.register(name, handler)
@@ -23,5 +17,4 @@ class HealthChecks
   def self.run
     registry.run_health_checks
   end
-
 end

@@ -6,11 +6,6 @@ require 'mixlib/cli'
 class CLI
   include Mixlib::CLI
 
-  option :configfile,
-    short: '-c FILE',
-    long: '--config FILE',
-    description: 'Configuration File to load'
-
   option :name,
     :short => '-n NAME',
     :long => '--name NAME',
@@ -31,7 +26,7 @@ class CLI
     :description => "Enable debug output",
     :boolean => true,
     :default => false,
-    :proc => ->(value) { $conf.mixin(log_level: value ? :debug : :info); value }
+    :proc => ->(value) { $conf.mixin(debug: value, log_level: value ? :debug : :info); value }
 
   option :help,
     :short => '-h',

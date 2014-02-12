@@ -29,48 +29,6 @@ if RUBY_PLATFORM == 'java'
   end
 end
 
-# load default configuration
-require 'liquid-logging'
-require 'liquid/configuration'
-
-$conf = Configuration.new
-
-# configuration-reloading callbacks
-reload_logger = ->(conf) do
-  ImprovedLogger::Formatter.format = conf.log_format
-  ImprovedLogger::Formatter.log4j_format = conf.log4j_format
-
-  $log = MultiLogger.new
-  $log.attach(ImprovedLogger.new(conf.log_backend.to_sym, File.basename($0)))
-  $log.level = conf.log_level.downcase.to_sym
-  $log.log_caller = conf.log_caller
-
-  # sneak this in automatically
-  ZK.logger = $log if ::Module.const_defined?(:ZK)
-end
-
-reload_mixins = ->(conf) do
-  if defined?(ROOT)
-    config_yml = File.join(ROOT, 'config.yml')
-    conf.mixin(config_yml) if File.exist?(config_yml)
-
-    dot_user = File.join(ROOT, '.user')
-
-    if File.exists?(dot_user)
-      File.readlines(dot_user).each do |line|
-        user_yml = File.join(ROOT, 'config', 'mixins', "#{line.chomp}.yml")
-        conf.mixin(user_yml)
-      end
-    end
-  end
-end
-
-# reload configuration, trigger callbacks
-$conf.callback(&reload_mixins)
-$conf.callback(&reload_logger)
-
-$conf.reload!
-
 # load a bunch of common classes here, so we don't have to track and repeat it
 # everywhere
 require 'active_support/all'
@@ -92,3 +50,36 @@ require 'liquid/from_file'
 require 'liquid/hash_helper'
 require 'liquid/timing'
 require 'liquid/transaction_id'
+
+# configuration callbacks
+require 'liquid/metrics'
+start_metrics = ->(conf) do
+  Metrics.start
+end
+
+require 'liquid/logger'
+reload_logger = ->(conf) do
+  $log = Liquid::Logger.new("root")
+end
+
+reload_mixins = ->(conf) do
+  if defined?(ROOT)
+    config_yml = File.join(ROOT, 'config.yml')
+    conf.mixin(config_yml) if File.exist?(config_yml)
+    dot_user = File.join(ROOT, '.user')
+    if File.exists?(dot_user)
+      File.readlines(dot_user).each do |line|
+        user_yml = File.join(ROOT, 'config', 'mixins', "#{line.chomp}.yml")
+        conf.mixin(user_yml)
+      end
+    end
+  end
+end
+
+# reload configuration, trigger callbacks
+require 'liquid/configuration'
+$conf = Liquid::Configuration.new
+$conf.callback(&reload_mixins)
+$conf.callback(&reload_logger)
+$conf.callback(&start_metrics)
+$conf.reload!

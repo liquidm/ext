@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "liquid-ext"
-  spec.version       = "2.0.2"
+  spec.version       = "3.0.0"
   spec.authors       = ["LiquidM, Inc."]
   spec.email         = ["opensource@liquidm.com"]
   spec.description   = %q{Ruby core extensions and helper libraries}
@@ -17,7 +17,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "erubis"
-  spec.add_dependency "liquid-logging", ">= 2.0.0"
   spec.add_dependency "mixlib-cli"
   spec.add_dependency "terminal-table"
 end
