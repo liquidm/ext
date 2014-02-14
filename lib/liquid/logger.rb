@@ -17,8 +17,8 @@ module Liquid
       root = org.apache.log4j.Logger.getRootLogger
       appender = org.apache.log4j.ConsoleAppender.new
       appender.name = "console"
-      appender.layout = org.apache.log4j.PatternLayout.new($conf.log_format)
-      appender.threshold = org.apache.log4j.Level.toLevel($conf.log_level.to_s)
+      appender.layout = org.apache.log4j.PatternLayout.new($conf.log.format)
+      appender.threshold = org.apache.log4j.Level.toLevel($conf.log.level.to_s)
       appender.activateOptions
       root.removeAllAppenders
       root.addAppender(appender)
@@ -101,7 +101,7 @@ module Liquid
     private
 
     def format(message, attribs = {})
-      attribs.merge!(called_from) if $conf.log_caller
+      attribs.merge!(called_from) if $conf.log.caller
       attribs = attribs.map do |k,v|
         "#{k}=#{v.to_s.clean_quote}"
       end.join(' ')

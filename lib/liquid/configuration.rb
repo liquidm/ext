@@ -80,27 +80,12 @@ module Liquid
   #
   class Configuration < Section
 
-    DEFAULTS = {
-      generic: {
-        log_caller: false,
-        log_level: :info,
-        log_format: "%d{ISO8601} %-5p #{File.basename($0)}(#{Process.pid})[%t]: %m%n",
-      },
-      production: {
-        log_format: "[%t]: %m%n",
-      },
-      staging: {
-        log_format: "[%t]: %m%n",
-      },
-    }
-
     # Create a new {Configuration} object.
     #
     # @yield [config]  The new configuration object.
     def initialize
       @mixins = OrderedSet.new
       @callbacks = []
-      mixin(DEFAULTS)
     end
 
     # Mixin a configuration snippet into the current section.

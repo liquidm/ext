@@ -62,6 +62,28 @@ reload_logger = ->(conf) do
   $log = Liquid::Logger.new("root")
 end
 
+load_defaults = ->(conf) do
+  conf.mixin({
+    generic: {
+      log: {
+        caller: false,
+        level: :info,
+        format: "%d{ISO8601} %-5p #{File.basename($0)}(#{Process.pid})[%t]: %m%n",
+      },
+    },
+    production: {
+      log: {
+        format: "[%t]: %m%n",
+      },
+    },
+    staging: {
+      log: {
+        format: "[%t]: %m%n",
+      },
+    },
+  })
+end
+
 reload_mixins = ->(conf) do
   if defined?(ROOT)
     config_yml = File.join(ROOT, 'config.yml')
@@ -79,6 +101,7 @@ end
 # reload configuration, trigger callbacks
 require 'liquid/configuration'
 $conf = Liquid::Configuration.new
+$conf.callback(&load_defaults)
 $conf.callback(&reload_mixins)
 $conf.callback(&reload_logger)
 $conf.callback(&start_metrics)
