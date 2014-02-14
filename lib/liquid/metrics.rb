@@ -16,7 +16,6 @@ module Metrics
 
   def self.start
     register_reporter(JmxReporter.forRegistry(@registry).build)
-    @reporters.each(&:start)
     Signal.register_shutdown_handler { stop }
   end
 
@@ -29,6 +28,7 @@ module Metrics
   end
 
   def self.register_reporter(reporter)
+    reporter.start
     @reporters << reporter
   end
 

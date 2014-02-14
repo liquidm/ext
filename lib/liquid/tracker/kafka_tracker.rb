@@ -13,7 +13,7 @@ module Tracker
     java_import 'kafka.producer.KeyedMessage'
 
     def initialize(topic, brokers = "localhost:9092")
-      super
+      super(topic)
       # http://kafka.apache.org/documentation.html#producerconfigs
       properties = java.util.Properties.new
       properties['metadata.broker.list'] = [brokers].flatten.join(',')

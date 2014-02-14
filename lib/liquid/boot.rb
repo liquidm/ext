@@ -55,6 +55,7 @@ require 'liquid/transaction_id'
 require 'liquid/metrics'
 start_metrics = ->(conf) do
   Metrics.start
+  Signal.register_shutdown_handler { Metrics.stop }
 end
 
 require 'liquid/logger'

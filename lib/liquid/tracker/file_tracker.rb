@@ -4,7 +4,7 @@ module Tracker
   class FileTracker < Base
 
     def event(obj)
-      file = File.open(File.join(ROOT, 'tmp', 'tracker.log'), 'a')
+      file = File.open(File.join(ROOT, 'log', "tracker-#{@topic}.log"), 'a')
       file.sync = true
       file.write(@serializer.dump(obj))
       file.write("\n")
