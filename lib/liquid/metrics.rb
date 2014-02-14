@@ -12,11 +12,24 @@ end
 
 module Metrics
   @registry = MetricRegistry.new
+  @reporters = []
 
   def self.start
-    reporter = JmxReporter.forRegistry(@registry).build
-    reporter.start
-    Signal.register_shutdown_handler { reporter.stop }
+    register_reporter(JmxReporter.forRegistry(@registry).build)
+    @reporters.each(&:start)
+    Signal.register_shutdown_handler { stop }
+  end
+
+  def self.stop
+    @reporters.each do |reporter|
+      reporter.run if reporter.respond_to?(:run)
+      reporter.stop
+    end
+    @reporters.clear
+  end
+
+  def self.register_reporter(reporter)
+    @reporters << reporter
   end
 
   def self.registry
