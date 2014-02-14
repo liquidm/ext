@@ -4,8 +4,8 @@ require 'liquid/tracker'
 module Metrics
   class TrackerReporter < Reporter
 
-    def initialize(registry, tracker)
-      super(registry)
+    def initialize(registry, tracker, params = {})
+      super(registry, params)
       @tracker = tracker
     end
 

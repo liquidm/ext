@@ -11,8 +11,9 @@ module Metrics
     attr_accessor :rate_unit
     attr_accessor :duration_unit
 
-    def initialize(registry)
+    def initialize(registry, params = {})
       @registry = registry
+      @params = params
       @filter = MetricFilter::ALL
       @executor = Executors.newSingleThreadScheduledExecutor
       self.rate_unit = TimeUnit::SECONDS
@@ -80,26 +81,26 @@ module Metrics
     end
 
     def report_gauge(name, gauge)
-      {
+      @params.merge({
         timestamp: Time.now.to_f,
         type: :gauge,
         name: name,
         value: gauge.value,
-      }
+      })
     end
 
     def report_counter(name, counter)
-      {
+      @params.merge({
         timestamp: Time.now.to_f,
         type: :counter,
         name: name,
         count: counter.count,
-      }
+      })
     end
 
     def report_histogram(name, histogram)
       snapshot = histogram.snapshot
-      {
+      @params.merge({
         timestamp: Time.now.to_f,
         type: :histogram,
         name: name,
@@ -114,11 +115,11 @@ module Metrics
         p98: snapshot.get98thPercentile,
         p99: snapshot.get99thPercentile,
         p999: snapshot.get999thPercentile,
-      }
+      })
     end
 
     def report_meter(name, meter)
-      {
+      @params.merge({
         timestamp: Time.now.to_f,
         type: :meter,
         name: name,
@@ -127,12 +128,12 @@ module Metrics
         m1: convert_rate(meter.getOneMinuteRate),
         m5: convert_rate(meter.getFiveMinuteRate),
         m15: convert_rate(meter.getFifteenMinuteRate),
-      }
+      })
     end
 
     def report_timer(name, timer)
       snapshot = timer.snapshot
-      {
+      @params.merge({
         timestamp: Time.now.to_f,
         type: :timer,
         name: name,
@@ -150,7 +151,7 @@ module Metrics
         m1: convert_rate(timer.getOneMinuteRate),
         m5: convert_rate(timer.getFiveMinuteRate),
         m15: convert_rate(timer.getFifteenMinuteRate),
-      }
+      })
     end
 
     def convert_duration(duration)
