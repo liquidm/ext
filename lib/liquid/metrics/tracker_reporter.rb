@@ -1,4 +1,5 @@
 require 'liquid/metrics/reporter'
+require 'liquid/tracker'
 
 module Metrics
   class TrackerReporter < Reporter

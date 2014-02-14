@@ -17,7 +17,7 @@ module Metrics
   def self.start(period = nil, unit = nil)
     @period ||= 10
     @unit ||= TimeUnit::SECONDS
-    register_reporter(JmxReporter.forRegistry(@registry).build)
+    JmxReporter.forRegistry(@registry).build.start
     Signal.register_shutdown_handler { stop }
   end
 
