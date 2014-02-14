@@ -17,6 +17,7 @@ module Metrics
       @executor = Executors.newSingleThreadScheduledExecutor
       self.rate_unit = TimeUnit::SECONDS
       self.duration_unit = TimeUnit::MILLISECONDS
+      ::Metrics.register_reporter(self)
     end
 
     def rate_unit=(value)
@@ -39,9 +40,7 @@ module Metrics
       $log.exception(e)
     end
 
-    def start(period = nil, unit = nil)
-      period ||= 10
-      unit ||= TimeUnit::SECONDS
+    def start(period, unit)
       @executor.scheduleAtFixedRate(self, period, period, unit)
     end
 
