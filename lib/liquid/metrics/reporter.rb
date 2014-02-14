@@ -82,7 +82,7 @@ module Metrics
 
     def report_gauge(name, gauge)
       @params.merge({
-        timestamp: Time.now.to_f,
+        timestamp: Time.now.to_i,
         type: :gauge,
         name: name,
         value: gauge.value,
@@ -91,7 +91,7 @@ module Metrics
 
     def report_counter(name, counter)
       @params.merge({
-        timestamp: Time.now.to_f,
+        timestamp: Time.now.to_i,
         type: :counter,
         name: name,
         count: counter.count,
@@ -101,7 +101,7 @@ module Metrics
     def report_histogram(name, histogram)
       snapshot = histogram.snapshot
       @params.merge({
-        timestamp: Time.now.to_f,
+        timestamp: Time.now.to_i,
         type: :histogram,
         name: name,
         count: histogram.count,
@@ -120,7 +120,7 @@ module Metrics
 
     def report_meter(name, meter)
       @params.merge({
-        timestamp: Time.now.to_f,
+        timestamp: Time.now.to_i,
         type: :meter,
         name: name,
         count: meter.count,
@@ -134,7 +134,7 @@ module Metrics
     def report_timer(name, timer)
       snapshot = timer.snapshot
       @params.merge({
-        timestamp: Time.now.to_f,
+        timestamp: Time.now.to_i,
         type: :timer,
         name: name,
         min: convert_duration(snapshot.getMin),
