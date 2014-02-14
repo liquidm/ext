@@ -15,22 +15,14 @@ module Timing
     end
 
     def tick
-      rt = runtime_since(@last_tick)
+      rt = System.nano_time - @last_tick
       @last_tick = System.nano_time
       rt
     end
 
     def stop
-      rt = runtime_since(@start)
+      rt = System.nano_time - @start
       reset!
-      rt
-    end
-
-    private
-
-    def runtime_since(start)
-      rt = System.nano_time - start
-      rt = rt.to_f / 1_000_000_000
       rt
     end
 
