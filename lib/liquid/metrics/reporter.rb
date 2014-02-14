@@ -81,6 +81,7 @@ module Metrics
 
     def report_gauge(name, gauge)
       {
+        timestamp: Time.now.to_f,
         type: :gauge,
         name: name,
         value: gauge.value,
@@ -89,6 +90,7 @@ module Metrics
 
     def report_counter(name, counter)
       {
+        timestamp: Time.now.to_f,
         type: :counter,
         name: name,
         count: counter.count,
@@ -98,6 +100,7 @@ module Metrics
     def report_histogram(name, histogram)
       snapshot = histogram.snapshot
       {
+        timestamp: Time.now.to_f,
         type: :histogram,
         name: name,
         count: histogram.count,
@@ -116,6 +119,7 @@ module Metrics
 
     def report_meter(name, meter)
       {
+        timestamp: Time.now.to_f,
         type: :meter,
         name: name,
         count: meter.count,
@@ -129,6 +133,7 @@ module Metrics
     def report_timer(name, timer)
       snapshot = timer.snapshot
       {
+        timestamp: Time.now.to_f,
         type: :timer,
         name: name,
         min: convert_duration(snapshot.getMin),
