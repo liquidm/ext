@@ -75,7 +75,7 @@ module Liquid
     end
 
     def exception(exc, message = nil, attribs = {})
-      ::Metrics.meter("exception:#{exc.class}").mark
+      ::Metrics.meter("exception:#{exc.class.to_s.tableize}").mark
       @exceptions[exc.class] ||= {}
       @exceptions[exc.class][exc.backtrace.first] ||= [System.nano_time, 1, 1]
       five_minutes_ago = System.nano_time - 300_000_000_000
