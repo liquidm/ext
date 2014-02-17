@@ -20,6 +20,11 @@ if RUBY_PLATFORM == 'java'
     # do nothing
   end
 
+  # load bundled jars
+  Dir[File.join(File.dirname(__FILE__), '*.jar')].each do |f|
+    require f
+  end
+
   # some java libraries cannot be found on maven central, so we load all bundled
   # jar files here for convenience
   if defined?(ROOT)
