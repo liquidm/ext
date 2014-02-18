@@ -57,6 +57,7 @@ class CLI
     cli.instance_eval(&block) if block_given?
     cli.parse_options
 
+
     $log.info("cli:initialize", cli.config)
     $conf.reload!
 
@@ -64,7 +65,7 @@ class CLI
     opts = cli.config.merge({
       fqdn: Socket.gethostbyname(Socket.gethostname).first
     })
-
+    
     # sneak in opts without subclassing
     cls.allocate.tap do |obj|
       obj.define_singleton_method(:opts) { opts }

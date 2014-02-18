@@ -107,8 +107,9 @@ end
 # reload configuration, trigger callbacks
 require 'liquid/configuration'
 $conf = Liquid::Configuration.new
-$conf.callback(&load_defaults)
+load_defaults.call($conf)
 $conf.callback(&reload_mixins)
 $conf.callback(&reload_logger)
 $conf.callback(&start_metrics)
 $conf.reload!
+
