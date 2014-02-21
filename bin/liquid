@@ -5,9 +5,9 @@ ROOT = File.expand_path('../..', __FILE__)
 require 'bundler/setup'
 require 'liquid/boot'
 
-require 'liquid/generator'
+require 'liquid/console'
 
-CLI.for(Liquid::Generator) do
+CLI.for(Liquid::Console) do
   option :author,
     :short => '-a',
     :long => '--author',

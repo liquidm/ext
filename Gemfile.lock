@@ -10,7 +10,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (4.0.2)
+    activesupport (4.0.3)
       i18n (~> 0.6, >= 0.6.4)
       minitest (~> 4.2)
       multi_json (~> 1.3)
@@ -18,7 +18,7 @@ GEM
       tzinfo (~> 0.3.37)
     atomic (1.1.14-java)
     awesome_print (1.2.0)
-    bond (0.4.3-java)
+    bond (0.5.1-java)
     brice (0.2.9)
       ruby-nuggets (>= 0.5.2)
     cane (2.6.1)
@@ -26,21 +26,25 @@ GEM
     coderay (1.1.0)
     columnize (0.3.6)
     diff-lcs (1.2.5)
-    docile (1.1.2)
+    docile (1.1.3)
     erubis (2.7.0)
     ffi (1.9.3-java)
     fuubar (1.3.2)
       rspec (>= 2.14.0, < 3.1.0)
       ruby-progressbar (~> 1.3)
+    hirb (0.7.1)
     i18n (0.6.9)
-    liquid-development (0.1.2)
+    liquid-development (0.2.0)
       awesome_print
+      bond
       brice
       cane
       fuubar
+      hirb
       pry
       rake
       reek
+      rib
       ripl
       rspec
       ruby-debug
@@ -67,16 +71,16 @@ GEM
       ruby2ruby (~> 2.0.7)
       ruby_parser (~> 3.2)
       sexp_processor
-    ripl (0.7.0)
-      bond (~> 0.4.2)
+    rib (1.2.3)
+    ripl (0.1.0)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
     rspec-core (2.14.7)
-    rspec-expectations (2.14.4)
+    rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.14.4)
+    rspec-mocks (2.14.6)
     ruby-debug (0.10.4)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.4.0)
@@ -86,7 +90,7 @@ GEM
     ruby2ruby (2.0.7)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
-    ruby_parser (3.3.0)
+    ruby_parser (3.4.1)
       sexp_processor (~> 4.1)
     sexp_processor (4.4.1)
     simplecov (0.8.2)
@@ -102,14 +106,14 @@ GEM
       nokogiri (>= 1.6.0)
       term-ansicolor (>= 1.0.5)
       text-table (>= 1.2.2)
-    term-ansicolor (1.2.2)
-      tins (~> 0.8)
+    term-ansicolor (1.3.0)
+      tins (~> 1.0)
     terminal-table (1.4.5)
     text-table (1.2.3)
     thread_safe (0.1.3-java)
       atomic
     timecop (0.7.1)
-    tins (0.13.1)
+    tins (1.0.0)
     tzinfo (0.3.38)
     yard (0.8.7.3)
 

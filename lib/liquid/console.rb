@@ -1,11 +1,18 @@
 require 'erubis'
 require 'mixlib/cli'
+require 'rib/runner'
+require 'rib/all'
 
 module Liquid
-  class Generator
+  class Console
 
     def run
       self.__send__(ARGV.shift, *ARGV)
+    end
+
+    def console(*args)
+      require 'liquid/boot'
+      Rib::Runner.run(args)
     end
 
     def project(name)

@@ -55,6 +55,7 @@ require 'liquid/from_file'
 require 'liquid/hash_helper'
 require 'liquid/timing'
 require 'liquid/transaction_id'
+require 'liquid/zmq'
 
 # configuration callbacks
 require 'liquid/metrics'
