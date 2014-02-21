@@ -43,4 +43,34 @@ class ZContext
   def sub(opts = {})
     create_socket_with_opts(ZMQ::SUB, opts)
   end
+
+  ## global context instance
+
+  def self.instance
+    @context ||= new
+  end
+
+  def self.router(opts = {})
+    instance.router(opts)
+  end
+
+  def self.dealer(opts = {})
+    instance.dealer(opts)
+  end
+
+  def self.push(opts = {})
+    instance.push(opts)
+  end
+
+  def self.pull(opts = {})
+    instance.pull(opts)
+  end
+
+  def self.pub(opts = {})
+    instance.pub(opts)
+  end
+
+  def self.sub(opts = {})
+    instance.sub(opts)
+  end
 end
