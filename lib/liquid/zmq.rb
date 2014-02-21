@@ -54,6 +54,14 @@ class ZContext
     instance.create_socket(type)
   end
 
+  def self.destroy_socket(socket)
+    instance.destroy_socket(socket)
+  end
+
+  def self.destroy
+    instance.destroy
+  end
+
   def self.router(opts = {})
     instance.router(opts)
   end
