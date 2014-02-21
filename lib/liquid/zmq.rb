@@ -50,6 +50,10 @@ class ZContext
     @context ||= new
   end
 
+  def self.create_socket(type)
+    instance.create_socket(type)
+  end
+
   def self.router(opts = {})
     instance.router(opts)
   end
