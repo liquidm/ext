@@ -11,9 +11,8 @@ module Metrics
     attr_accessor :rate_unit
     attr_accessor :duration_unit
 
-    def initialize(registry, params = {})
-      @registry = registry
-      @params = params
+    def initialize(*args)
+      @registry = ::Metrics.registry
       @filter = MetricFilter::ALL
       @executor = Executors.newSingleThreadScheduledExecutor
       self.rate_unit = TimeUnit::SECONDS
@@ -41,7 +40,7 @@ module Metrics
       $log.exception(e)
     end
 
-    def start(period, unit)
+    def start(period = 60, unit = TimeUnit::SECONDS)
       @executor.scheduleAtFixedRate(self, period, period, unit)
     end
 
@@ -81,26 +80,26 @@ module Metrics
     end
 
     def report_gauge(name, gauge)
-      @params.merge({
+      {
         timestamp: Time.now.to_i,
         type: :gauge,
         name: name,
         value: gauge.value,
-      })
+      }
     end
 
     def report_counter(name, counter)
-      @params.merge({
+      {
         timestamp: Time.now.to_i,
         type: :counter,
         name: name,
         count: counter.count,
-      })
+      }
     end
 
     def report_histogram(name, histogram)
       snapshot = histogram.snapshot
-      @params.merge({
+      {
         timestamp: Time.now.to_i,
         type: :histogram,
         name: name,
@@ -115,11 +114,11 @@ module Metrics
         p98: snapshot.get98thPercentile,
         p99: snapshot.get99thPercentile,
         p999: snapshot.get999thPercentile,
-      })
+      }
     end
 
     def report_meter(name, meter)
-      @params.merge({
+      {
         timestamp: Time.now.to_i,
         type: :meter,
         name: name,
@@ -128,12 +127,12 @@ module Metrics
         m1: convert_rate(meter.getOneMinuteRate),
         m5: convert_rate(meter.getFiveMinuteRate),
         m15: convert_rate(meter.getFifteenMinuteRate),
-      })
+      }
     end
 
     def report_timer(name, timer)
       snapshot = timer.snapshot
-      @params.merge({
+      {
         timestamp: Time.now.to_i,
         type: :timer,
         name: name,
@@ -151,7 +150,7 @@ module Metrics
         m1: convert_rate(timer.getOneMinuteRate),
         m5: convert_rate(timer.getFiveMinuteRate),
         m15: convert_rate(timer.getFifteenMinuteRate),
-      })
+      }
     end
 
     def convert_duration(duration)

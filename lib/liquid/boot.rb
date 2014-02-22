@@ -57,38 +57,15 @@ require 'liquid/timing'
 require 'liquid/transaction_id'
 require 'liquid/zmq'
 
-# configuration callbacks
+# metrics
 require 'liquid/metrics'
-start_metrics = ->(conf) do
-  Metrics.start
-  Signal.register_shutdown_handler { Metrics.stop }
-end
+Metrics.start
+Signal.register_shutdown_handler { Metrics.stop }
 
+# configuration callbacks
 require 'liquid/logger'
 reload_logger = ->(conf) do
   $log = Liquid::Logger.new("root")
-end
-
-load_defaults = ->(conf) do
-  conf.mixin({
-    generic: {
-      log: {
-        caller: false,
-        level: :info,
-        format: "%d{ISO8601} %-5p #{File.basename($0)}(#{Process.pid})[%t]: %m%n",
-      },
-    },
-    production: {
-      log: {
-        format: "[%t]: %m%n",
-      },
-    },
-    staging: {
-      log: {
-        format: "[%t]: %m%n",
-      },
-    },
-  })
 end
 
 reload_mixins = ->(conf) do
@@ -105,11 +82,29 @@ reload_mixins = ->(conf) do
   end
 end
 
-# reload configuration, trigger callbacks
 require 'liquid/configuration'
 $conf = Liquid::Configuration.new
-$conf.callback(&load_defaults)
+
+$conf.mixin({
+  generic: {
+    log: {
+      caller: false,
+      level: :info,
+      format: "%d{ISO8601} %-5p #{File.basename($0)}(#{Process.pid})[%t]: %m%n",
+    },
+  },
+  production: {
+    log: {
+      format: "[%t]: %m%n",
+    },
+  },
+  staging: {
+    log: {
+      format: "[%t]: %m%n",
+    },
+  },
+})
+
 $conf.callback(&reload_mixins)
 $conf.callback(&reload_logger)
-$conf.callback(&start_metrics)
 $conf.reload!

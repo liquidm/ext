@@ -3,8 +3,8 @@ require 'liquid/tracker/base'
 module Tracker
   class FileTracker < Base
 
-    def event(obj)
-      file = File.open(File.join(ROOT, 'log', "tracker-#{@topic}.log"), 'a')
+    def event(obj, topic)
+      file = File.open(File.join(ROOT, 'log', "tracker-#{topic}.log"), 'a')
       file.sync = true
       file.write(@serializer.dump(obj))
       file.write("\n")

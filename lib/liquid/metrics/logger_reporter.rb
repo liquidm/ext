@@ -3,8 +3,8 @@ require 'liquid/metrics/reporter'
 module Metrics
   class LoggerReporter < Reporter
 
-    def initialize(registry, logger)
-      super(registry)
+    def initialize(logger)
+      super
       @logger = logger
       @marker = "metrics:"
     end

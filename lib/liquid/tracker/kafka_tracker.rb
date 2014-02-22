@@ -12,20 +12,9 @@ module Tracker
     java_import 'kafka.producer.ProducerConfig'
     java_import 'kafka.producer.KeyedMessage'
 
-    def initialize(topic, brokers = "localhost:9092")
-      super(topic)
-      # http://kafka.apache.org/documentation.html#producerconfigs
-      properties = java.util.Properties.new
-      properties['metadata.broker.list'] = [brokers].flatten.join(',')
-      properties['producer.type'] = 'async'
-      properties['compression.codec'] = 'snappy'
-      properties['serializer.class'] = 'kafka.serializer.StringEncoder'
-      properties['queue.enqueue.timeout.ms'] = '0' # drop instant if q is full
-      properties['queue.buffering.max.messages'] = '100000'
-      properties['batch.num.messages'] = '2000'
-      properties['queue.buffering.max.ms'] = '10000'
+    def initialize(properties, dimensions = {})
+      super(dimensions)
       @producer = Producer.new(ProducerConfig.new(properties))
-      @topic = topic
     end
 
     def down?
@@ -34,10 +23,10 @@ module Tracker
       false
     end
 
-    def event(obj)
-      @producer.send(KeyedMessage.new(@topic, @serializer.dump(obj)))
+    def event(obj, topic)
+      @producer.send(KeyedMessage.new(topic, @serializer.dump(obj)))
     rescue => e
-      # TODO: maybe fall back to file logger here
+      # TODO: maybe fall back to FileTracker here
       $log.exception(e, "failed to log event=#{obj.inspect}")
     end
 
