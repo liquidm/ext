@@ -53,14 +53,10 @@ require 'liquid/cli'
 require 'liquid/environment'
 require 'liquid/from_file'
 require 'liquid/hash_helper'
+require 'liquid/metrics'
 require 'liquid/timing'
 require 'liquid/transaction_id'
 require 'liquid/zmq'
-
-# metrics
-require 'liquid/metrics'
-Metrics.start
-Signal.register_shutdown_handler { Metrics.stop }
 
 # configuration callbacks
 require 'liquid/logger'
