@@ -14,4 +14,10 @@ class Thread
     end
   end
 
+  def self.join
+    Thread.list.reject do |thread|
+      thread == Thread.current
+    end.each(&:join)
+  end
+
 end
