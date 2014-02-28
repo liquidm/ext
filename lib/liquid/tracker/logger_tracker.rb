@@ -3,8 +3,8 @@ require 'liquid/tracker/base'
 
 module Tracker
   class LoggerTracker < Base
-    def event(obj, topic)
-      $log.info("tracker:event:#{topic} #{@serializer.dump(obj)}")
+    def event(topic, data)
+      $log.info("tracker:event:#{topic} #{data}")
     end
 
     def down?

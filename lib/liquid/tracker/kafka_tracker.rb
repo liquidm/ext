@@ -24,8 +24,8 @@ module Tracker
       false
     end
 
-    def event(obj, topic)
-      @producer.send(KeyedMessage.new(topic, @serializer.dump(obj)))
+    def event(topic, data)
+      @producer.send(KeyedMessage.new(topic, data))
     rescue => e
       # TODO: maybe fall back to FileTracker here
       $log.exception(e, "failed to log event=#{obj.inspect}")

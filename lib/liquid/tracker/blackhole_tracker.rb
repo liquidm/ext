@@ -2,7 +2,7 @@ require 'liquid/tracker/base'
 
 module Tracker
   class BlackholeTracker < Base
-    def event(obj, topic)
+    def event(topic, data)
     end
 
     def down?

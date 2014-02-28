@@ -54,7 +54,9 @@ require 'liquid/environment'
 require 'liquid/from_file'
 require 'liquid/hash_helper'
 require 'liquid/metrics'
+require 'liquid/server'
 require 'liquid/timing'
+require 'liquid/tracker'
 require 'liquid/transaction_id'
 require 'liquid/zmq'
 
@@ -87,6 +89,18 @@ $conf.mixin({
       caller: false,
       level: :info,
       format: "%d{ISO8601} %-5p #{File.basename($0)}(#{Process.pid})[%t]: %m%n",
+    },
+    tracker: {
+      dimensions: {},
+      kafka: {
+        enabled: false,
+        brokers: [
+          '0.0.0.0:9092'
+        ]
+      },
+    },
+    zmachine: {
+      debug: false,
     },
   },
   production: {
