@@ -63,7 +63,7 @@ require 'liquid/zmq'
 # configuration callbacks
 require 'liquid/logger'
 reload_logger = ->(conf) do
-  $log = Liquid::Logger.new("root")
+  $log ||= Liquid::Logger.new("root")
 end
 
 reload_mixins = ->(conf) do

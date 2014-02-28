@@ -37,5 +37,10 @@ module Liquid
       Signal.register_shutdown_handler { ZMachine.stop }
     end
 
+    def run
+      # by default wait for all workers
+      Thread.join
+    end
+
   end
 end

@@ -14,6 +14,7 @@ module Liquid
       @progname = progname || File.basename($0)
       @logger = LoggerFactory.getLogger(name)
       @exceptions = {}
+      @exception_handlers = [method(:_log_error_exception)]
       root = org.apache.log4j.Logger.getRootLogger
       appender = org.apache.log4j.ConsoleAppender.new
       appender.name = "console"
@@ -74,7 +75,17 @@ module Liquid
       @logger.error(format(*args))
     end
 
+    def add_exception_handler(&block)
+      @exception_handlers << block
+    end
+
     def exception(exc, message = nil, attribs = {})
+      @exception_handlers.each do |callback|
+        callback.call(exc, message, attribs)
+      end
+    end
+
+    def _log_error_exception(exc, message, attribs)
       ::Metrics.meter("exception:#{exc.class.to_s.tableize}").mark
       @exceptions[exc.class] ||= {}
       @exceptions[exc.class][exc.backtrace.first] ||= [System.nano_time, 1, 1]
