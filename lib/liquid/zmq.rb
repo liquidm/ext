@@ -61,6 +61,8 @@ class ZContext
 
   def self.destroy
     instance.destroy
+  rescue Java::JavaLang::IllegalStateException
+    # ignore broken shutdown in zeromq
   end
 
   def self.router(opts = {})

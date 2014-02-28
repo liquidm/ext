@@ -6,8 +6,21 @@ module Liquid
     def initialize
       $log.info("#{self.class.name.downcase} #{RUBY_DESCRIPTION}")
       $log.info("#{self.class.name.downcase}", env: Env.mode)
+      initialize_raven
       initialize_tracker
       initialize_metrics
+    end
+
+    def initialize_raven
+      return unless $conf.raven
+      require 'raven'
+      Raven.configure do |config|
+        config.dsn = $conf.raven.dsn
+        config.logger = $log
+      end
+      $log.add_exception_handler do |exc, message, attribs|
+        Raven.capture_exception(exc)
+      end
     end
 
     def initialize_tracker
@@ -31,6 +44,7 @@ module Liquid
     end
 
     def initialize_zmachine
+      require 'zmachine'
       ZMachine.logger = $log
       ZMachine.debug = true if $conf.zmachine.debug
       ZMachine.heartbeat_interval = 0.1

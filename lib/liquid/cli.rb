@@ -57,8 +57,8 @@ class CLI
     cli.instance_eval(&block) if block_given?
     cli.parse_options
 
-    $log.info("cli:initialize", cli.config)
     $conf.reload!
+    $log.info("cli:initialize", cli.config)
 
     # infer some variables
     opts = cli.config.merge({
