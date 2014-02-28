@@ -15,6 +15,10 @@ module Liquid
       @logger = LoggerFactory.getLogger(name)
       @exceptions = {}
       @exception_handlers = [method(:_log_error_exception)]
+      reload!
+    end
+
+    def reload!
       root = org.apache.log4j.Logger.getRootLogger
       appender = org.apache.log4j.ConsoleAppender.new
       appender.name = "console"
