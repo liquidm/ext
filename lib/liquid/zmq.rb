@@ -7,6 +7,9 @@ java_import "org.zeromq.ZMQException"
 java_import "org.zeromq.ZMQQueue"
 java_import "org.zeromq.ZMsg"
 java_import "org.zeromq.ZThread"
+
+java_import "java.nio.channels.AsynchronousCloseException"
+java_import "java.nio.channels.ClosedChannelException"
 java_import "java.nio.channels.ClosedSelectorException"
 
 class ZContext
