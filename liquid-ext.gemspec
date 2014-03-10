@@ -19,4 +19,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "erubis"
   spec.add_dependency "mixlib-cli"
   spec.add_dependency "terminal-table"
+  spec.add_dependency "jmx4r"
 end
