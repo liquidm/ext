@@ -116,6 +116,13 @@ $conf.mixin({
   },
 })
 
+
 $conf.callback(&reload_mixins)
 $conf.callback(&reload_logger)
 $conf.reload!
+
+
+if $conf.code_reloader
+  require 'liquid/code_reloader'
+  CodeReloader.new
+end
