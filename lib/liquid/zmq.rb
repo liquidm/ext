@@ -8,11 +8,8 @@ java_import "org.zeromq.ZMQQueue"
 java_import "org.zeromq.ZMsg"
 java_import "org.zeromq.ZThread"
 
-java_import "java.nio.channels.AsynchronousCloseException"
-java_import "java.nio.channels.ClosedChannelException"
-java_import "java.nio.channels.ClosedSelectorException"
-
 class ZContext
+
   def create_socket_with_opts(type, opts = {})
     socket = create_socket(type)
     opts.each do |key, value|
@@ -62,10 +59,31 @@ class ZContext
     instance.destroy_socket(socket)
   end
 
+  # really incredible how many exceptions a simple shutdown can throw all over
+  # the place. if it's one thing ZMQ did never get right it is the shutdown
+  # logic ...
   def self.destroy
     instance.destroy
   rescue Java::JavaLang::IllegalStateException
     # ignore broken shutdown in zeromq
+  end
+
+  DestroyExceptions = [
+    Java::JavaNioChannels::AsynchronousCloseException,
+    Java::JavaNioChannels::ClosedChannelException,
+    Java::JavaNioChannels::ClosedSelectorException,
+  ]
+
+  Exceptions = DestroyExceptions + [
+    Java::OrgZeromq::ZMQException,
+    Java::Zmq::ZError::IOException,
+  ]
+
+  def self.destroy_exception?(e)
+    return true if e.is_a?(Java::OrgZeromq::ZMQException) && ZMQ::Error::ETERM.getCode == e.getErrorCode
+    return true if e.is_a?(Java::Zmq::ZError::IOException) && DestroyExceptions.include?(e.cause.class)
+    return true if DestroyExceptions.include?(e.class)
+    return false
   end
 
   def self.router(opts = {})
