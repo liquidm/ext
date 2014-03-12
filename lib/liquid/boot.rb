@@ -123,6 +123,7 @@ $conf.reload!
 if $conf.code_reloader
   require 'liquid/code_reloader'
   $:.each do |path|
+    next unless File.directory?(path)
     CodeReloader.new(path)
   end
 end

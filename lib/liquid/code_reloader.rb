@@ -3,11 +3,7 @@ require 'listen'
 class CodeReloader
 
   def initialize(path)
-    if !File.exist?(path)
-      $log.warn("code.reloader", path_invalid: path)
-      return
-    end
-    $log.info("code.reloader", active: true, path: path)
+    $log.debug("code.reloader", active: true, path: path)
     Listen.to(path) do |m, a, r|
       Thread.name = "Code Reloader (#{path})"
       (m + a).uniq.each do |file|
