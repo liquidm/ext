@@ -9,6 +9,7 @@ module Liquid
       initialize_raven
       initialize_tracker
       initialize_metrics
+      initialize_health_checks
     end
 
     def initialize_raven
@@ -41,6 +42,13 @@ module Liquid
       ::Metrics.start
       ::Metrics::TrackerReporter.new($tracker.with_topic('metrics'))
       Signal.register_shutdown_handler { ::Metrics.stop }
+    end
+
+    def initialize_health_checks
+      Thread.new do
+        Thread.name = "Health Check"
+        HealthCheck.poll
+      end
     end
 
     def initialize_zmachine
