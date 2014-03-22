@@ -3,7 +3,7 @@ require 'listen'
 class CodeReloader
 
   def initialize(path)
-    $log.debug("code.reloader", active: true, path: path)
+    $log.warn("code.reloader", active: true, path: path)
     Listen.to(path) do |m, a, r|
       Thread.name = "Code Reloader (#{path})"
       (m + a).uniq.each do |file|

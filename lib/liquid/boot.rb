@@ -121,10 +121,7 @@ $conf.callback(&reload_mixins)
 $conf.callback(&reload_logger)
 $conf.reload!
 
-if $conf.code_reloader
+if defined?(ROOT) && $conf.code_reloader
   require 'liquid/code_reloader'
-  $:.each do |path|
-    next unless File.directory?(path)
-    CodeReloader.new(path)
-  end
+  CodeReloader.new(ROOT)
 end
