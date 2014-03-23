@@ -24,14 +24,6 @@ if RUBY_PLATFORM == 'java'
   Dir[File.join(File.dirname(__FILE__), '*.jar')].each do |f|
     require f
   end
-
-  # some java libraries cannot be found on maven central, so we load all bundled
-  # jar files here for convenience
-  if defined?(ROOT)
-    Dir[File.join(ROOT, 'jars', '*.jar')].each do |f|
-      require f
-    end
-  end
 end
 
 # load a bunch of common classes here, so we don't have to track and repeat it
@@ -59,6 +51,7 @@ require 'liquid/server'
 require 'liquid/timing'
 require 'liquid/tracker'
 require 'liquid/transaction_id'
+require 'liquid/trove'
 require 'liquid/zmq'
 
 # configuration callbacks

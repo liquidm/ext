@@ -1,6 +1,3 @@
-require 'liquid/logger'
-
-require_relative './metrics-core-3.0.1.jar'
 java_import 'com.codahale.metrics.Histogram'
 java_import 'com.codahale.metrics.JmxReporter'
 java_import 'com.codahale.metrics.MetricRegistry'

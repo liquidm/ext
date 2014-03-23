@@ -1,4 +1,3 @@
-require_relative "./jeromq-0.3.3.jar"
 java_import "org.zeromq.ZContext"
 java_import "org.zeromq.ZFrame"
 java_import "org.zeromq.ZLoop"

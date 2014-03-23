@@ -1,8 +1,3 @@
-require 'liquid/ext/string'
-
-require_relative './slf4j-api-1.7.6.jar'
-require_relative './slf4j-log4j12-1.7.6.jar'
-require_relative './log4j-1.2.17.jar'
 java_import 'org.slf4j.LoggerFactory'
 
 module Liquid
