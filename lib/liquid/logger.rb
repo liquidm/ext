@@ -4,24 +4,35 @@ module Liquid
   class Logger
 
     attr_accessor :progname
+    attr_accessor :appender
 
     def initialize(name, progname = nil)
       @progname = progname || File.basename($0)
       @logger = LoggerFactory.getLogger(name)
       @exceptions = {}
       @exception_handlers = [method(:_log_error_exception)]
-      reload!
+      unmute!
     end
 
     def reload!
       root = org.apache.log4j.Logger.getRootLogger
-      appender = org.apache.log4j.ConsoleAppender.new
-      appender.name = "console"
+      appender = @appender.new
+      appender.name = "default"
       appender.layout = org.apache.log4j.PatternLayout.new($conf.log.format)
       appender.threshold = org.apache.log4j.Level.toLevel($conf.log.level.to_s)
       appender.activateOptions
       root.removeAllAppenders
       root.addAppender(appender)
+    end
+
+    def mute!
+      @appender = org.apache.log4j.varia.NullAppender
+      reload!
+    end
+
+    def unmute!
+      @appender = org.apache.log4j.ConsoleAppender
+      reload!
     end
 
     def trace?
