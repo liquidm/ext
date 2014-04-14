@@ -90,6 +90,7 @@ desc 'Run all QA tasks'
 task :qa do
   Rake.application.in_namespace(:qa) do |namespace|
     namespace.tasks.each do |task|
+      puts "\033[34m*** Runing #{task.name}\033[0m\n\n"
       task.invoke
     end
   end
