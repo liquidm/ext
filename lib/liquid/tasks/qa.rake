@@ -71,6 +71,19 @@ begin
       task.fail_on_error = false
     end
   end
+
+begin
+  require 'rails_best_practices'
+
+  namespace :qa do
+    desc 'Run rails_best_practices'
+    task :rails_best_practices do
+      `rails_best_practices #{qa_glob}`
+    end
+  end
+
+rescue LoadError
+  warn 'rails_best_practices not available, QA task not provided.'
 end
 
 desc 'Run all QA tasks'
