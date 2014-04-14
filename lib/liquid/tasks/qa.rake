@@ -72,6 +72,10 @@ begin
     end
   end
 
+rescue LoadError
+  warn 'rubocop not available, QA task not provided.'
+end
+
 begin
   require 'rails_best_practices'
 
