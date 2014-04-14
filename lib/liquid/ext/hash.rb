@@ -6,8 +6,8 @@ class Hash
   # Recursively merge +other_hash+ into +self+ and return the new hash.
   def deep_merge(other_hash)
     self.merge(other_hash) do |key, oldval, newval|
-      oldval = oldval.to_hash if oldval.respond_to?(:to_hash)
-      newval = newval.to_hash if newval.respond_to?(:to_hash)
+      oldval = oldval.to_hash if oldval.respond_to?(:to_hash) && !oldval.is_a?(Array)
+      newval = newval.to_hash if newval.respond_to?(:to_hash) && !newval.is_a?(Array)
       oldval.is_a?(Hash) && newval.is_a?(Hash) ? oldval.deep_merge(newval) : newval
     end
   end
