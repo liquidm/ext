@@ -1,11 +1,12 @@
 PATH
   remote: .
   specs:
-    liquid-ext (3.3.0)
+    liquid-ext (3.3.3)
       activesupport
       erubis
       jmx4r
       mixlib-cli
+      multi_json
       terminal-table
 
 GEM
@@ -17,7 +18,7 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
-    atomic (1.1.15-java)
+    atomic (1.1.16-java)
     awesome_print (1.2.0)
     bond (0.5.1-java)
     brice (0.2.9)
@@ -106,7 +107,7 @@ GEM
       tins (~> 1.0)
     terminal-table (1.4.5)
     text-table (1.2.3)
-    thread_safe (0.2.0-java)
+    thread_safe (0.3.1-java)
       atomic (>= 1.1.7, < 2)
     timecop (0.7.1)
     tins (1.0.0)
