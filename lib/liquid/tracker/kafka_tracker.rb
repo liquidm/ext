@@ -22,7 +22,7 @@ module Tracker
       @producer.send(KeyedMessage.new(topic, data))
     rescue => e
       # TODO: maybe fall back to FileTracker here
-      $log.exception(e, "failed to log event=#{obj.inspect}")
+      $log.exception(e, "failed to log #{topic}=#{data.inspect}")
     end
 
     def shutdown
