@@ -33,7 +33,6 @@ begin
   end
 
 rescue LoadError
-  warn 'cane not available, QA task not provided.'
 end
 
 begin
@@ -47,7 +46,6 @@ begin
   end
 
 rescue LoadError
-  warn 'reek not available, QA task not provided.'
 end
 
 begin
@@ -62,7 +60,6 @@ begin
   end
 
 rescue LoadError
-  warn 'tailor not available, QA task not provided.'
 end
 
 begin
@@ -71,13 +68,11 @@ begin
   namespace :qa do
     Rubocop::RakeTask.new(:rubocop) do |task|
       task.patterns = qa_files_array
-      task.formatters = ['fuubar']
       task.fail_on_error = false
     end
   end
 
 rescue LoadError
-  warn 'rubocop not available, QA task not provided.'
 end
 
 begin
@@ -91,7 +86,6 @@ begin
   end
 
 rescue LoadError
-  warn 'rails_best_practices not available, QA task not provided.'
 end
 
 desc 'Run all QA tasks'
@@ -99,11 +93,11 @@ task :qa do
   if qa_files_array.any?
     Rake.application.in_namespace(:qa) do |namespace|
       namespace.tasks.each do |task|
-        puts "\033[34m*** Runing #{task.name}\033[0m\n\n"
+        puts "\033[34m*** Running #{task.name}\033[0m"
         task.invoke
       end
     end
   else
-    puts "\033[33mNo file changes identified, skipping QA tasks\033[0m\n\n"
+    puts "\033[33mNo file changes identified, skipping QA tasks\033[0m"
   end
 end
