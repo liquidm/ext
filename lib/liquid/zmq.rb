@@ -63,7 +63,7 @@ class ZContext
   # logic ...
   def self.destroy
     instance.destroy
-  rescue Java::JavaLang::IllegalStateException
+  rescue Java::JavaLang::IllegalStateException, Java::JavaLang::NullPointerException
     # ignore broken shutdown in zeromq
   end
 
