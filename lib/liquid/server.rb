@@ -6,6 +6,8 @@ module Liquid
     def initialize
       $log.info("#{self.class.name.downcase} #{RUBY_DESCRIPTION}")
       $log.info("#{self.class.name.downcase}", env: Env.mode)
+      Signal.register_shutdown_handler { System.exit(0) }
+      Signal.register_shutdown_handler { ZContext.destroy }
       initialize_raven
       initialize_tracker
       initialize_metrics
@@ -56,7 +58,6 @@ module Liquid
       ZMachine.logger = $log
       ZMachine.debug = true if $conf.zmachine.debug
       ZMachine.heartbeat_interval = 0.1
-      Signal.register_shutdown_handler { ZMachine.stop }
     end
 
     def run

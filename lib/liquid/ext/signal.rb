@@ -8,7 +8,7 @@ module Signal
     signals.each do |sig|
       old = trap(sig) {}
       trap(sig) do
-        $log.info("shutdown", handler: block.inspect)
+        $log.debug("shutdown", handler: block.inspect)
         block.call
         old.call
       end

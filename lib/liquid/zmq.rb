@@ -7,6 +7,21 @@ java_import "org.zeromq.ZMQQueue"
 java_import "org.zeromq.ZMsg"
 java_import "org.zeromq.ZThread"
 
+class ZMQ
+  class Socket
+    # for performance reason we alias the method here (otherwise it uses reflections all the time!)
+    # super ugly, since we need to dynamically infer the java class of byte[]
+    java_alias :send_byte_buffer, :sendByteBuffer, [Java::JavaNio::ByteBuffer.java_class, Java::int]
+    java_alias :send_byte_array, :send, [[].to_java(:byte).java_class, Java::int]
+    java_alias :recv_byte_array, :recv, [Java::int]
+
+    def write(buffer)
+      bytes = send_byte_buffer(buffer, 0)
+      buffer.position(buffer.position + bytes)
+    end
+  end
+end
+
 class ZContext
 
   def create_socket_with_opts(type, opts = {})
@@ -46,8 +61,12 @@ class ZContext
 
   ## global context instance
 
+  @mutex = Mutex.new
+
   def self.instance
-    @context ||= new
+    @mutex.synchronize do
+      @context ||= new
+    end
   end
 
   def self.create_socket(type)
