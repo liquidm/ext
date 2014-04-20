@@ -58,6 +58,7 @@ module Liquid
       ZMachine.logger = $log
       ZMachine.debug = true if $conf.zmachine.debug
       ZMachine.heartbeat_interval = 0.1
+      Signal.register_shutdown_handler { ZMachine.stop }
     end
 
     def run
