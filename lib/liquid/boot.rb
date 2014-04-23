@@ -32,6 +32,8 @@ require 'active_support/all'
 require 'cgi'
 require 'date'
 require 'json'
+require 'set'
+require 'singleton'
 require 'socket'
 require 'time'
 
