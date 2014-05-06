@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    liquid-ext (3.3.10)
+    liquid-ext (3.4.0)
       activesupport
       erubis
       jmx4r
@@ -57,7 +57,7 @@ GEM
     method_source (0.8.2)
     mini_portile (0.5.3)
     minitest (5.3.3)
-    mixlib-cli (1.4.0)
+    mixlib-cli (1.5.0)
     multi_json (1.9.2)
     nokogiri (1.6.1-java)
       mini_portile (~> 0.5.0)

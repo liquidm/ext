@@ -1,3 +1,5 @@
+require 'ipaddr'
+
 class Socket
   def self.ipaddress
     hostname = %x(hostname).chomp

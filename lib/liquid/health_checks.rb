@@ -21,9 +21,14 @@ class HealthCheck
   end
 
   @@checks = {}
+  @@callbacks = []
 
   def self.inherited(child)
     @@checks[child.name.demodulize] = child
+  end
+
+  def self.callback(cb = nil, &block)
+    @@callbacks << (cb || block)
   end
 
   def self.run
@@ -35,13 +40,20 @@ class HealthCheck
 
   def self.poll(interval = 5)
     loop do
-      @healthy = run.values.all?(&:healthy?)
       sleep(interval)
+      trigger
+    end
+  end
+
+  def self.trigger
+    results = run
+    @@callbacks.each do |cb|
+      cb.call(results)
     end
   end
 
   def self.healthy?
-    @healthy.nil? ? run.values.all?(&:healthy?) : @healthy
+    run.values.all?(&:healthy?)
   end
 
   def execute
