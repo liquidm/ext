@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    liquid-ext (3.4.0)
+    liquid-ext (3.4.1)
       activesupport
       erubis
       jmx4r
