@@ -48,7 +48,11 @@ class HealthCheck
   def self.trigger
     results = run
     @@callbacks.each do |cb|
-      cb.call(results)
+      begin
+        cb.call(results)
+      rescue => e
+        $log.exception(e, "failed to run health check callback")
+      end
     end
   end
 
