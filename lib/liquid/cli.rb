@@ -62,7 +62,7 @@ class CLI
 
     # infer some variables
     opts = cli.config.merge({
-      fqdn: Socket.gethostbyname(Socket.gethostname).first
+      fqdn: Socket.fqdn
     })
 
     # sneak in opts without subclassing

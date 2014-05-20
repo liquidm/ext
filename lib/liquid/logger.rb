@@ -1,4 +1,8 @@
-java_import 'org.slf4j.LoggerFactory'
+if RUBY_PLATFORM == "java"
+  java_import 'org.slf4j.LoggerFactory'
+else
+  require 'logger'
+end
 
 module Liquid
   class Logger
@@ -7,14 +11,16 @@ module Liquid
     attr_accessor :appender
 
     def initialize(name, progname = nil)
+      @java = RUBY_PLATFORM == "java"
       @progname = progname || File.basename($0)
-      @logger = LoggerFactory.getLogger(name)
+      @logger = @java ? LoggerFactory.getLogger(name) : ::Logger.new(STDOUT)
       @exceptions = {}
       @exception_handlers = [method(:_log_error_exception)]
       unmute!
     end
 
     def reload!
+      return unless @java
       root = org.apache.log4j.Logger.getRootLogger
       appender = @appender.new
       appender.name = "default"
@@ -26,17 +32,25 @@ module Liquid
     end
 
     def mute!
-      @appender = org.apache.log4j.varia.NullAppender
+      if @java
+        @appender = org.apache.log4j.varia.NullAppender
+      else
+        @logger = ::Logger.new("/dev/null")
+      end
       reload!
     end
 
     def unmute!
-      @appender = org.apache.log4j.ConsoleAppender
+      if @java
+        @appender = org.apache.log4j.ConsoleAppender
+      else
+        @logger = ::Logger.new(STDOUT)
+      end
       reload!
     end
 
     def trace?
-      @logger.trace_enabled?
+      @java ? @logger.trace_enabled? : @logger.trace?
     end
 
     def trace(*args, &block)
@@ -46,7 +60,7 @@ module Liquid
     end
 
     def debug?
-      @logger.debug_enabled?
+      @java ? @logger.debug_enabled? : @logger.debug?
     end
 
     def debug(*args, &block)
@@ -56,7 +70,7 @@ module Liquid
     end
 
     def info?
-      @logger.info_enabled?
+      @java ? @logger.info_enabled? : @logger.info?
     end
 
     def info(*args, &block)
@@ -66,7 +80,7 @@ module Liquid
     end
 
     def warn?
-      @logger.warn_enabled?
+      @java ? @logger.warn_enabled? : @logger.warn?
     end
 
     def warn(*args, &block)
@@ -76,7 +90,7 @@ module Liquid
     end
 
     def error?
-      @logger.error_enabled?
+      @java ? @logger.error_enabled? : @logger.error?
     end
 
     def error(*args, &block)
