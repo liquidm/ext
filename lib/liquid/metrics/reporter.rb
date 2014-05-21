@@ -84,7 +84,7 @@ module Metrics
         timestamp: Time.now.to_i,
         type: :gauge,
         name: name,
-        value: gauge.value,
+        value: gauge.getValue,
       }
     end
 

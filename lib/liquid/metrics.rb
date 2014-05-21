@@ -1,4 +1,5 @@
 if RUBY_PLATFORM == "java"
+  java_import 'com.codahale.metrics.Gauge'
   java_import 'com.codahale.metrics.Histogram'
   java_import 'com.codahale.metrics.JmxReporter'
   java_import 'com.codahale.metrics.MetricRegistry'
@@ -12,9 +13,9 @@ if RUBY_PLATFORM == "java"
     @registry = MetricRegistry.new
     @reporters = []
 
-    def self.start(period = nil, unit = nil)
-      @period ||= 60
-      @unit ||= TimeUnit::SECONDS
+    def self.start
+      @period = $conf.metrics.interval
+      @unit = TimeUnit::SECONDS
       JmxReporter.forRegistry(@registry).build.start
       Signal.register_shutdown_handler { stop }
     end
@@ -34,6 +35,10 @@ if RUBY_PLATFORM == "java"
 
     def self.registry
       @registry
+    end
+
+    def self.gauge(name, handler)
+      registry.register(name, handler)
     end
 
     def self.counter(name)

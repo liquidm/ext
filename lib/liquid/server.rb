@@ -4,9 +4,16 @@ if RUBY_PLATFORM == "java"
 
   module Liquid
     class Server
+      attr_reader :started_at
+
+      def name
+        @name ||= self.class.name.downcase.gsub(/::/, '.')
+      end
+
       def initialize
-        $log.info("#{self.class.name.downcase} #{RUBY_DESCRIPTION}")
-        $log.info("#{self.class.name.downcase}", env: Env.mode)
+        @started_at = Time.now
+        $log.info("#{name} #{RUBY_DESCRIPTION}")
+        $log.info("#{name}", env: Env.mode)
         Signal.register_shutdown_handler { System.exit(0) }
         Signal.register_shutdown_handler { ZContext.destroy }
         initialize_raven
@@ -41,9 +48,31 @@ if RUBY_PLATFORM == "java"
         Signal.register_shutdown_handler { $tracker.shutdown }
       end
 
+      class HealthGauge
+        include Gauge
+
+        def getValue
+          HealthCheck.healthy? ? 1 : 0
+        end
+      end
+
+      class UptimeGauge
+        include Gauge
+
+        def initialize(server)
+          @server = server
+        end
+
+        def getValue
+          @server.uptime.to_i
+        end
+      end
+
       def initialize_metrics
         ::Metrics.start
         ::Metrics::TrackerReporter.new($tracker.with_topic('metrics'))
+        ::Metrics.gauge("#{name}.healthy", HealthGauge.new)
+        ::Metrics.gauge("#{name}.uptime", UptimeGauge.new(self))
         Signal.register_shutdown_handler { ::Metrics.stop }
       end
 
@@ -65,6 +94,10 @@ if RUBY_PLATFORM == "java"
       def run
         # by default wait for all workers
         Thread.join
+      end
+
+      def uptime
+        Time.now - @started_at
       end
 
     end

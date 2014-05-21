@@ -16,7 +16,7 @@ class HealthCheck
     end
 
     def to_s
-      "Result{isHealthy=#{healthy?},message=#{message.inspect},exception=#{exception.inspect}}"
+      "Result(healthy=#{healthy?},message=#{message.inspect},exception=#{exception.inspect})"
     end
   end
 

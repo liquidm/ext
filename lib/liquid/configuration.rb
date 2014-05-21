@@ -106,7 +106,7 @@ module Liquid
 
       value = Section.from_hash(value)
 
-      deep_merge!(value[:generic]) if value.has_key?(:generic)
+      deep_merge!(value.delete(:generic)) if value.has_key?(:generic)
 
       if value.has_key?(Env.to_sym)
         deep_merge!(value[Env.to_sym])

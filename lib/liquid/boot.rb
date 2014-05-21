@@ -87,6 +87,9 @@ $conf.mixin({
       level: :info,
       format: "%d{ISO8601} %-5p #{File.basename($0)}(#{Process.pid})[%t]: %m%n",
     },
+    metrics: {
+      interval: 60,
+    },
     tracker: {
       dimensions: {},
       kafka: {
