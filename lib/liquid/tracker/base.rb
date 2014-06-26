@@ -21,7 +21,8 @@ module Tracker
     end
 
     def event(obj)
-      @tracker.event(@topic, @serializer.dump(obj))
+      log_entry = @serializer.dump(obj)
+      @tracker.event(@topic, log_entry) if log_entry
     end
   end
 end
