@@ -36,14 +36,19 @@ class HealthCheck
   end
 
   def self.run
-    @@checks.inject({}) do |result, (name, handler)|
-      if handler.class == Proc
-        result[name] = handler.call
+    @@checks.inject({}) do |results, (name, handler)|
+      if handler.is_a? Proc
+        result = handler.call
       else
-        result[name] = handler.new.execute
+        result = handler.new.execute
       end
 
-      result
+      unless result.is_a? Result
+        result = Result.new(result , nil, nil)
+      end
+
+      results[name] = result
+      results
     end
   end
 
