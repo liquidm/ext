@@ -23,6 +23,10 @@ class HealthCheck
   @@checks = {}
   @@callbacks = []
 
+  def self.register(name, &block)
+    @@checks[name.to_s] = block
+  end
+
   def self.inherited(child)
     @@checks[child.name.demodulize] = child
   end
@@ -32,9 +36,19 @@ class HealthCheck
   end
 
   def self.run
-    @@checks.inject({}) do |result, (name, handler)|
-      result[name] = handler.new.execute
-      result
+    @@checks.inject({}) do |results, (name, handler)|
+      if handler.is_a? Proc
+        result = handler.call
+      else
+        result = handler.new.execute
+      end
+
+      unless result.is_a? Result
+        result = Result.new(result , nil, nil)
+      end
+
+      results[name] = result
+      results
     end
   end
 
