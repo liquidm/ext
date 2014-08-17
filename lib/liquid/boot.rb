@@ -68,7 +68,7 @@ reload_mixins = ->(conf) do
     config_yml = File.join(ROOT, 'config.yml')
     conf.mixin(config_yml) if File.exist?(config_yml)
     dot_user = File.join(ROOT, '.user')
-    if File.exists?(dot_user)
+    if File.exist?(dot_user)
       File.readlines(dot_user).each do |line|
         user_yml = File.join(ROOT, 'config', 'mixins', "#{line.chomp}.yml")
         conf.mixin(user_yml)

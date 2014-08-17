@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-require 'liquid/boot'
 require 'mixlib/cli'
 
 class CLI

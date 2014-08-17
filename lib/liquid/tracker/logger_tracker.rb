@@ -1,4 +1,3 @@
-require 'liquid/boot'
 require 'liquid/tracker/base'
 
 module Tracker
