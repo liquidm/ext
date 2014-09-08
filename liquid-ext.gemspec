@@ -15,10 +15,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'activesupport', '~> 0'
-  spec.add_dependency 'erubis', '~> 0'
-  spec.add_dependency 'jmx4r', '~> 0'
-  spec.add_dependency 'mixlib-cli', '~> 0'
-  spec.add_dependency 'multi_json', '~> 0'
-  spec.add_dependency 'terminal-table', '~> 0'
+  spec.add_dependency 'activesupport'
+  spec.add_dependency 'erubis'
+  spec.add_dependency 'jmx4r'
+  spec.add_dependency 'mixlib-cli'
+  spec.add_dependency 'multi_json'
+  spec.add_dependency 'terminal-table'
 end
