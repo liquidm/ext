@@ -20,14 +20,10 @@ module Tracker
 
     def get_thread_producer
       Thread.current[:producer] ||= Producer.new(ProducerConfig.new(@properties))
-      @producer = Thread.current[:producer]
     end
 
     def event(topic, data)
-      get_thread_producer
-      require "ruby-debug"
-          debugger
-      @producer.send(KeyedMessage.new(topic, data))
+      get_thread_producer.send(KeyedMessage.new(topic, data))
     rescue => e
       # TODO: maybe fall back to FileTracker here
       $log.exception(e, "failed to log #{topic}=#{data.inspect}")
