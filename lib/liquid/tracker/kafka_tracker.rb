@@ -8,8 +8,8 @@ module Tracker
     java_import 'kafka.producer.KeyedMessage'
 
     def initialize(properties, dimensions = {})
+      @properties = properties
       super(dimensions)
-      @producer = Producer.new(ProducerConfig.new(properties))
     end
 
     def down?
@@ -18,8 +18,12 @@ module Tracker
       false
     end
 
+    def get_thread_producer
+      Thread.current[:producer] ||= Producer.new(ProducerConfig.new(@properties))
+    end
+
     def event(topic, data)
-      @producer.send(KeyedMessage.new(topic, data))
+      get_thread_producer.send(KeyedMessage.new(topic, data))
     rescue => e
       # TODO: maybe fall back to FileTracker here
       $log.exception(e, "failed to log #{topic}=#{data.inspect}")
