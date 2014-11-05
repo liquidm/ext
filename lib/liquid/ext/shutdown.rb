@@ -10,7 +10,7 @@ module Shutdown
   # asynchronous code when the 'seconds' parameter set to nil value as blocking codes would prevent
   # the process from terminating.
   def self.register_handler_with_timeout(seconds, source_location = nil)
-    return unless block_given
+    return unless block_given?
     at_exit do
       $log.debug("Execute shutdown handler", location: (source_location || Proc.new.source_location).join(':')) if $log
       begin
@@ -29,8 +29,8 @@ module Shutdown
   # use this for non_blocking code, use register_handler_with_timout if you make potentially
   # blocking calls
   def self.register_handler
-    return unless block_given
-    self.with_handler_in_time(nil, Proc.new.source_location ) { yield }
+    return unless block_given?
+    self.register_handler_with_timeout(nil, Proc.new.source_location ) { yield }
   end
 
 end

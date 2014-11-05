@@ -10,8 +10,8 @@ if RUBY_PLATFORM == "java"
   end
 
   # Example usage:
-  # add gauge: ::Metrics.gauge('binlog_publisher.is_leader', StaticGauge.new(true))
-  # log output: 2014-11-05 12:46:26,412 INFO  binlog-publisher(17957)[pool-2-thread-1]: tracker:event:metrics {"timestamp":1415187986,"type":"gauge","name":"binlog_publisher.is_leader","value":true}
+  # add gauge: ::Metrics.gauge('event name', StaticGauge.new(true))
+  # log output: 2014-11-05 12:46:26,412 INFO  process: tracker:event:metrics {"timestamp":1415187986,"type":"gauge","name":"event name","value":true}
   class StaticGauge
      include Gauge
      def initialize(value = nil)
