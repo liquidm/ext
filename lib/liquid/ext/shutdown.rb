@@ -9,9 +9,10 @@ module Shutdown
   # If the first parameter is nil, the handler will not check the codes runtime. Be cautios when executing
   # asynchronous code when the 'seconds' parameter set to nil value as blocking codes would prevent
   # the process from terminating.
-  def self.with_handler_in_time(seconds, source_location = nil)
+  def self.register_handler_with_timeout(seconds, source_location = nil)
+    return unless block_given
     at_exit do
-      $log.info("Execute shutdown handler at #{(source_location || Proc.new.source_location).join(':')}") if $log
+      $log.debug("Execute shutdown handler", location: (source_location || Proc.new.source_location).join(':')) if $log
       begin
         Timeout::timeout(seconds) { yield }
       rescue => e
@@ -25,9 +26,10 @@ module Shutdown
   # If multiple hanlders are registered, they are executed in reverse order of registration.
   #
   # with_handler will not check the execution duration of the given block so only
-  # use this for non_blocking code, use with_handler_in_time if you make potentially
+  # use this for non_blocking code, use register_handler_with_timout if you make potentially
   # blocking calls
-  def self.with_handler
+  def self.register_handler
+    return unless block_given
     self.with_handler_in_time(nil, Proc.new.source_location ) { yield }
   end
 
