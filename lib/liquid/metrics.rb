@@ -9,6 +9,17 @@ if RUBY_PLATFORM == "java"
     java_alias :update_long, :update, [Java::long]
   end
 
+  class StaticGauge
+     include Gauge
+     def initialize(value = nil)
+       @value = value
+     end
+
+     def getValue
+       @value
+     end
+  end
+
   module Metrics
     @registry = MetricRegistry.new
     @reporters = []
