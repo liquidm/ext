@@ -9,20 +9,6 @@ if RUBY_PLATFORM == "java"
     java_alias :update_long, :update, [Java::long]
   end
 
-  # Example usage:
-  # add gauge: ::Metrics.gauge('event name', StaticGauge.new(true))
-  # log output: 2014-11-05 12:46:26,412 INFO  process: tracker:event:metrics {"timestamp":1415187986,"type":"gauge","name":"event name","value":true}
-  class StaticGauge
-     include Gauge
-     def initialize(value = nil)
-       @value = value
-     end
-
-     def getValue
-       @value
-     end
-  end
-
   module Metrics
     @registry = MetricRegistry.new
     @reporters = []
