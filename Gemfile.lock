@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    liquid-ext (3.5.2)
+    liquid-ext (3.5.4)
       activesupport
       erubis
       jmx4r
@@ -12,14 +12,13 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (4.1.5)
+    activesupport (4.1.7)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     awesome_print (1.2.0)
-    bond (0.5.1)
     bond (0.5.1-java)
     brice (0.2.9)
       ruby-nuggets (>= 0.5.2)
@@ -56,15 +55,11 @@ GEM
       yard
     log_switch (0.4.0)
     method_source (0.8.2)
-    minitest (5.4.0)
+    minitest (5.4.3)
     mixlib-cli (1.5.0)
     multi_json (1.10.1)
     nokogiri (1.6.2.1-java)
     parallel (1.0.0)
-    pry (0.9.12.6)
-      coderay (~> 1.0)
-      method_source (~> 0.8)
-      slop (~> 3.4)
     pry (0.9.12.6-java)
       coderay (~> 1.0)
       method_source (~> 0.8)
