@@ -68,11 +68,21 @@ if RUBY_PLATFORM == "java"
         end
       end
 
+      class UsedMemoryGauge
+        include Gauge
+
+        def getValue
+          runtime = Java::JavaLang::Runtime.get_runtime
+          (runtime.max_memory - runtime.free_memory) / 1024 / 1024
+        end
+      end
+
       def initialize_metrics
         ::Metrics.start
         ::Metrics::TrackerReporter.new($tracker.with_topic('metrics'))
         ::Metrics.gauge("#{name}.healthy", HealthGauge.new)
         ::Metrics.gauge("#{name}.uptime", UptimeGauge.new(self))
+        ::Metrics.gauge("#{name}.used_memory", UsedMemoryGauge.new)
         Signal.register_shutdown_handler { ::Metrics.stop }
       end
 
