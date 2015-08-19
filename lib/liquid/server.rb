@@ -36,11 +36,17 @@ if RUBY_PLATFORM == "java"
 
       def initialize_tracker
         if $conf.tracker.kafka.enabled
-          # http://kafka.apache.org/documentation.html#producerconfigs
+          # http://kafka.apache.org/documentation.html#newproducerconfigs
           properties = java.util.Properties.new
-          properties['metadata.broker.list'] = $conf.tracker.kafka.brokers.join(',')
-          properties['producer.type'] = 'async'
-          properties['serializer.class'] = 'kafka.serializer.StringEncoder'
+          properties['bootstrap.servers'] = $conf.tracker.kafka.brokers.join(',')
+          properties['key.serializer'] = 'org.apache.kafka.common.serialization.StringSerializer'
+          properties['value.serializer'] = 'org.apache.kafka.common.serialization.StringSerializer'
+          properties['linger.ms'] = 10
+
+          if ['gzip', 'snappy'].include? $conf.tracker.kafka.compression
+            properties['compression.type'] = $conf.tracker.kafka.compression
+          end
+
           $tracker = ::Tracker::KafkaTracker.new(properties, $conf.tracker.dimensions)
         else
           $tracker = ::Tracker::LoggerTracker.new($conf.tracker.dimensions)

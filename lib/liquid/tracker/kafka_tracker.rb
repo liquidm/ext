@@ -3,13 +3,12 @@ require 'liquid/tracker/base'
 module Tracker
   class KafkaTracker < Base
 
-    java_import 'kafka.javaapi.producer.Producer'
-    java_import 'kafka.producer.ProducerConfig'
-    java_import 'kafka.producer.KeyedMessage'
+    java_import 'org.apache.kafka.clients.producer.KafkaProducer'
+    java_import 'org.apache.kafka.clients.producer.ProducerRecord'
 
     def initialize(properties, dimensions = {})
       super(dimensions)
-      @producer = Producer.new(ProducerConfig.new(properties))
+      @producer = KafkaProducer.new(properties)
     end
 
     def down?
@@ -19,7 +18,7 @@ module Tracker
     end
 
     def event(topic, data)
-      @producer.send(KeyedMessage.new(topic, data))
+      @producer.send(ProducerRecord.new(topic, data))
     rescue => e
       # TODO: maybe fall back to FileTracker here
       $log.exception(e, "failed to log #{topic}=#{data.inspect}")
@@ -27,8 +26,6 @@ module Tracker
 
     def shutdown
       @producer.close if @producer
-    rescue Java::KafkaProducer::ProducerClosedException
-      # pass
     end
 
   end
