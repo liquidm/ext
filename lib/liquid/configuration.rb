@@ -68,7 +68,15 @@ module Liquid
         self[$1.to_sym] = Section.from_value(args.first)
       else
         value = self[name]
-        self[name] = value.call if value.is_a?(Proc)
+        if value == nil
+          if self.class.nil_action == :raise
+            raise "No value set for config key #{name}"
+          elsif self.class.nil_action == :section
+            self[name] = Section.from_value({})
+          end
+        else
+          self[name] = value.call if value.is_a?(Proc)
+        end
         self[name]
       end
     end
