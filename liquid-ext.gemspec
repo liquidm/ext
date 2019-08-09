@@ -20,5 +20,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'jmx4r'
   spec.add_dependency 'mixlib-cli'
   spec.add_dependency 'multi_json'
+  spec.add_dependency 'telegraf'
   spec.add_dependency 'terminal-table'
 end

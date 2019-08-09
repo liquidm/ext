@@ -17,7 +17,7 @@ if RUBY_PLATFORM == "java"
         Signal.register_shutdown_handler { System.exit(0) }
         Signal.register_shutdown_handler { ZContext.destroy }
         initialize_raven
-        initialize_tracker
+        initialize_trackers
         initialize_metrics
         initialize_health_checks
       end
@@ -34,7 +34,9 @@ if RUBY_PLATFORM == "java"
         end
       end
 
-      def initialize_tracker
+      def initialize_trackers
+        @trackers = []
+
         if $conf.tracker.kafka.enabled
           # http://kafka.apache.org/documentation.html#newproducerconfigs
           properties = java.util.Properties.new
@@ -47,11 +49,20 @@ if RUBY_PLATFORM == "java"
             properties['compression.type'] = $conf.tracker.kafka.compression
           end
 
-          $tracker = ::Tracker::KafkaTracker.new(properties, $conf.tracker.dimensions)
-        else
-          $tracker = ::Tracker::LoggerTracker.new($conf.tracker.dimensions)
+          trackers << ::Tracker::KafkaTracker.new(properties, $conf.tracker.dimensions)
         end
-        Signal.register_shutdown_handler { $tracker.shutdown }
+
+        if $conf.tracker.telegraf.enabled
+          trackers << ::Tracker::TelegrafTracker.new($conf.tracker.dimensions)
+        end
+
+        if @trackers.none?
+          trackers << ::Tracker::LoggerTracker.new($conf.tracker.dimensions)
+        end
+
+        @trackers.each do |tracker|
+          Signal.register_shutdown_handler { tracker.shutdown }
+        end
       end
 
       class HealthGauge
@@ -85,11 +96,14 @@ if RUBY_PLATFORM == "java"
 
       def initialize_metrics
         ::Metrics.start
-        ::Metrics::TrackerReporter.new($tracker.with_topic('metrics'))
         ::Metrics.gauge("#{name}.healthy", HealthGauge.new)
         ::Metrics.gauge("#{name}.uptime", UptimeGauge.new(self))
         ::Metrics.gauge("#{name}.used_memory", UsedMemoryGauge.new)
         Signal.register_shutdown_handler { ::Metrics.stop }
+
+        @trackers.each do |tracker|
+          ::Metrics::TrackerReporter.new(tracker.with_topic('metrics'))
+        end
       end
 
       def initialize_health_checks
