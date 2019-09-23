@@ -49,15 +49,15 @@ if RUBY_PLATFORM == "java"
             properties['compression.type'] = $conf.tracker.kafka.compression
           end
 
-          trackers << ::Tracker::KafkaTracker.new(properties, $conf.tracker.dimensions)
+          @trackers << ::Tracker::KafkaTracker.new(properties, $conf.tracker.dimensions)
         end
 
         if $conf.tracker.telegraf.enabled
-          trackers << ::Tracker::TelegrafTracker.new($conf.tracker.dimensions)
+          @trackers << ::Tracker::TelegrafTracker.new($conf.tracker.dimensions)
         end
 
         if @trackers.none?
-          trackers << ::Tracker::LoggerTracker.new($conf.tracker.dimensions)
+          @trackers << ::Tracker::LoggerTracker.new($conf.tracker.dimensions)
         end
 
         @trackers.each do |tracker|
