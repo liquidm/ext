@@ -53,7 +53,7 @@ if RUBY_PLATFORM == "java"
         end
 
         if $conf.tracker.telegraf.enabled
-          @trackers << ::Tracker::TelegrafTracker.new($conf.tracker.dimensions)
+          @trackers << ::Tracker::TelegrafTracker.new($conf.tracker.telegraf.port, $conf.tracker.dimensions)
         end
 
         if @trackers.none?
@@ -102,7 +102,13 @@ if RUBY_PLATFORM == "java"
         Signal.register_shutdown_handler { ::Metrics.stop }
 
         @trackers.each do |tracker|
-          ::Metrics::TrackerReporter.new(tracker.with_topic('metrics'))
+          if tracker.is_a?(Tracker::TelegrafTracker)
+            serializer = Tracker::NoopSerializer
+          else
+            serializer = Tracker::JsonSerializer
+          end
+
+          ::Metrics::TrackerReporter.new(tracker.with_topic('metrics', serializer))
         end
       end
 

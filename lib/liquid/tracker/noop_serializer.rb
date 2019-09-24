@@ -1,5 +1,5 @@
 module Tracker
-  class JsonSerializer
+  class NoopSerializer
     def initialize(dimensions)
       @dimensions = dimensions
     end

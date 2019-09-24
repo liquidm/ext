@@ -4,8 +4,8 @@ require 'telegraf'
 module Tracker
   class TelegrafTracker < Base
 
-    def initialize(port, dimensions = {}, serializer = nil)
-      super(dimensions, serializer)
+    def initialize(port, dimensions = {})
+      super(dimensions)
       @telegraf = Telegraf::Agent.new("udp://localhost:#{port}") rescue nil
     end
 
