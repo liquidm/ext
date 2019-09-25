@@ -50,8 +50,13 @@ module Tracker
     end
 
     def event(obj)
-      log_entry = @serializer.dump(obj)
-      @tracker.event(@topic, log_entry) if log_entry
+      unless @tracker.down?
+        log_entry = @serializer.dump(obj)
+
+        if log_entry
+          @tracker.event(@topic, log_entry)
+        end
+      end
     end
   end
 end
