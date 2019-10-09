@@ -18,7 +18,7 @@ module Tracker
     end
 
     def down?
-      !!@telegraf
+      @telegraf == nil
     end
 
     def shutdown
