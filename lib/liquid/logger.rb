@@ -7,46 +7,28 @@ end
 module Liquid
   class Logger
 
-    attr_accessor :progname
-    attr_accessor :appender
-
-    def initialize(name, progname = nil)
+    def initialize(name)
       @java = RUBY_PLATFORM == "java"
-      @progname = progname || File.basename($0)
       @logger = @java ? LoggerFactory.getLogger(name) : ::Logger.new(STDOUT)
       @exceptions = {}
       @exception_handlers = [method(:_log_error_exception)]
-      unmute!
+      reload!
     end
 
     def reload!
-      return unless @java
-      root = org.apache.log4j.Logger.getRootLogger
-      appender = @appender.new
-      appender.name = "default"
-      appender.layout = org.apache.log4j.PatternLayout.new($conf.log.format)
-      appender.threshold = org.apache.log4j.Level.toLevel($conf.log.level.to_s)
-      appender.activateOptions
-      root.removeAllAppenders
-      root.addAppender(appender)
-    end
-
-    def mute!
       if @java
-        @appender = org.apache.log4j.varia.NullAppender
-      else
-        @logger = ::Logger.new("/dev/null")
-      end
-      reload!
-    end
-
-    def unmute!
-      if @java
-        @appender = org.apache.log4j.ConsoleAppender
+        root = org.apache.log4j.Logger.getRootLogger
+        appender = org.apache.log4j.ConsoleAppender.new
+        appender.name = "default"
+        appender.layout = org.apache.log4j.PatternLayout.new($conf.log.format)
+        appender.threshold = org.apache.log4j.Level.toLevel($conf.log.level)
+        appender.activateOptions
+        root.removeAllAppenders
+        root.addAppender(appender)
       else
         @logger = ::Logger.new(STDOUT)
+        @logger.level = $conf.log.level
       end
-      reload!
     end
 
     def trace?
