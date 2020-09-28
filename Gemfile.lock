@@ -52,8 +52,8 @@ GEM
     ice_nine (0.11.2)
     influxdb (0.8.0)
     jmx4r (0.1.4)
-    json (2.1.0)
-    json (2.1.0-java)
+    json (2.3.1)
+    json (2.3.1-java)
     liquid-development (0.2.1)
       awesome_print
       bond
